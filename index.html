@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智能健康问诊系统</title>
+    <style>
+        /* 基础样式 */
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f7fa;
+        }
+
+        .container {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+        }
+
+        /* 表单样式 */
+        fieldset {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+
+        legend {
+            font-weight: bold;
+            padding: 0 10px;
+        }
+
+        .form-row {
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        label {
+            min-width: 120px;
+            font-weight: 500;
+        }
+
+        input, select, textarea {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            flex: 1;
+        }
+
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px;
+            margin: 10px 0;
+        }
+
+        .checkbox-item {
+        background-color: #ffffff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 15px;
+        width: 30%;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: box-shadow 0.3s ease;
+        cursor: pointer;
+        }
+
+        button {
+            background: #007bff;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+
+        /* 报告样式 */
+        .report-section {
+            background: #fff;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .warning {
+            color: #dc3545;
+            font-weight: bold;
+        }
+
+        .miao-advice {
+            background: #e8f5e9;
+            border-left: 4px solid #2ecc71;
+            padding: 15px;
+        }
+
+        .loading {
+            display: none;
+            color: #666;
+            font-style: italic;
+        }
+        .male-item{
+        background-color: #ffffff;
+         border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 15px;
+        width: 50%;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: box-shadow 0.3s ease;
+        cursor: pointer;
+        /* 显示在一行 */
+        display: inline-block;
+        }
+
+        /* Markdown样式 */
+        .report-content h2, .report-content h3, .report-content h4 {
+            margin-top: 1.5em;
+            margin-bottom: 0.5em;
+            color: #2c3e50;
+        }
+        .report-content h2 {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 0.3em;
+        }
+        .report-content ul, .report-content ol {
+            padding-left: 2em;
+            margin: 1em 0;
+        }
+        .report-content li {
+            margin-bottom: 0.5em;
+        }
+        .report-content p {
+            margin: 1em 0;
+            line-height: 1.6;
+        }
+        .report-content strong {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        .report-content em {
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="mainContainer">
+        <!-- 问诊表单 -->
+        <form id="healthForm">
+            <h1>高血压糖尿病在线问诊</h1>
+
+            <!-- 基本信息 -->
+            <fieldset>
+                <legend>基本信息</legend>
+                <div class="form-row">
+                    <label for="name">姓名：</label>
+                    <input type="text" id="name" required>
+                </div>
+                <div class="form-row">
+                    <label>性别：</label>
+                    <label class="male-item">
+                    <input type="radio" id="male" name="gender" value="男" required> 男
+                    </label>
+                         <label class="male-item">
+                        <input type="radio" name="gender" id="female" value="女">女
+                        </label>
+                </div>
+                <div class="form-row">
+                    <label for="age">年龄：</label>
+                    <input type="number" id="age" min="18" max="120" required>
+                </div>
+                <div class="form-row">
+                    <label for="ethnicity">民族：</label>
+                    <select id="ethnicity" required>
+                        <option value="汉族">汉族</option>
+                        <option value="苗族">苗族</option>
+                        <option value="侗族">侗族</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <label for="contact">联系方式：</label>
+                    <input type="tel" id="contact" required>
+                </div>
+                <div class="form-row">
+                    <label for="address">居住地：</label>
+                    <input type="text" id="address" required>
+                </div>
+            </fieldset>
+
+            <!-- 血压值 -->
+            <fieldset>
+                <legend>血压值</legend>
+                <div class="form-row">
+                    <label>血压测量：</label>
+                    <input type="number" id="systolic" placeholder="收缩压" required>
+                    <span>/</span>
+                    <input type="number" id="diastolic" placeholder="舒张压" required>
+                    <span>mmHg</span>
+                </div>
+            </fieldset>
+
+            <!-- 血糖值 -->
+            <fieldset>
+                <legend>血糖值</legend>
+                <div class="form-row">
+                    <label>空腹血糖：</label>
+                    <input type="number" id="blood-sugar-fasting" step="0.1" required>
+                    <span>mmol/L</span>
+                </div>
+                <div class="form-row">
+                    <label>餐后血糖：</label>
+                    <input type="number" id="blood-sugar-dinner" step="0.1" required>
+                    <span>mmol/L</span>
+                </div>
+            </fieldset>
+
+            <!-- 症状 -->
+            <fieldset>
+                <legend>身体不适状况</legend>
+                <div class="checkbox-group">
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="symptoms" value="头晕"> 头晕
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="symptoms" value="乏力"> 乏力
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="symptoms" value="胸痛"> 胸痛
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="symptoms" value="眼花"> 眼花
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="symptoms" value="口渴"> 口渴
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="symptoms" value="多尿"> 多尿
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="symptoms" value="心悸"> 心悸
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="symptoms" value="呼吸困难"> 呼吸困难
+                    </label>
+                </div>
+            </fieldset>
+
+            <!-- 并发症 -->
+            <fieldset>
+                <legend>并发症</legend>
+                <h4>高血压并发症</h4>
+                <div class="checkbox-group">
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="hypertension-complications" value="心脏病"> 心脏病
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="hypertension-complications" value="中风"> 中风
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="hypertension-complications" value="肾病"> 肾病
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="hypertension-complications" value="视网膜病变"> 视网膜病变
+                    </label>
+                </div>
+
+                <h4>糖尿病并发症</h4>
+                <div class="checkbox-group">
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="diabetes-complications" value="神经损伤"> 神经损伤
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="diabetes-complications" value="肾功能损伤"> 肾功能损伤
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="diabetes-complications" value="心血管问题"> 心血管问题
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="diabetes-complications" value="糖尿病足"> 糖尿病足
+                    </label>
+                </div>
+            </fieldset>
+
+            <!-- 过敏史 -->
+            <fieldset>
+                <legend>用药过敏</legend>
+                <div class="form-row">
+                    <label>过敏史：</label>
+                    <div class="checkbox-item">
+                        <input type="radio" name="allergy" value="是" required> 是
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="radio" name="allergy" value="否"> 否
+                    </div>
+                </div>
+                <div class="form-row">
+                    <label for="allergy-details">过敏详情：</label>
+                    <textarea id="allergy-details" rows="2"></textarea>
+                </div>
+            </fieldset>
+
+            <button type="button" onclick="generateReport()">生成健康报告</button>
+            <div class="loading" id="loading">正在生成报告，请稍候...</div>
+        </form>
+
+        <!-- 报告显示区域 -->
+        <div id="reportContainer" style="display: none;"></div>
+    </div>
+
+    <script>
+        const DEEPSEEK_API_KEY = 'sk-6cecc16e7c074089a36f153ec43f5b8a';
+        const API_URL = 'https://api.deepseek.com/v1/chat/completions';
+
+        async function generateReport() {
+            try {
+                // 显示加载状态
+                document.getElementById('loading').style.display = 'block';
+
+                // 收集表单数据
+                const formData = {
+                    name: document.getElementById('name').value,
+                    gender: document.querySelector('input[name="gender"]:checked')?.value || '',
+                    age: document.getElementById('age').value,
+                    ethnicity: document.getElementById('ethnicity').value,
+                    systolic: document.getElementById('systolic').value,
+                    diastolic: document.getElementById('diastolic').value,
+                    bloodSugarFasting: document.getElementById('blood-sugar-fasting').value,
+                    bloodSugarDinner: document.getElementById('blood-sugar-dinner').value,
+                    symptoms: Array.from(document.querySelectorAll('[name="symptoms"]:checked')).map(c => c.value),
+                    hypertensionComplications: Array.from(document.querySelectorAll('[name="hypertension-complications"]:checked')).map(c => c.value),
+                    diabetesComplications: Array.from(document.querySelectorAll('[name="diabetes-complications"]:checked')).map(c => c.value),
+                    allergy: document.querySelector('input[name="allergy"]:checked')?.value || '否',
+                    allergyDetails: document.getElementById('allergy-details').value
+                };
+
+                // 基本验证
+                if (!formData.name || !formData.age || !formData.systolic || !formData.diastolic) {
+                    alert('请填写所有必填字段');
+                    return;
+                }
+
+                // 构建提示词
+                const prompt = `作为专业医生，请根据以下患者信息生成详细健康报告：
+患者信息：
+- 姓名：${formData.name}
+- 年龄：${formData.age}岁
+- 性别：${formData.gender}
+- 民族：${formData.ethnicity}
+- 血压：${formData.systolic}/${formData.diastolic} mmHg
+- 血糖：空腹 ${formData.bloodSugarFasting} mmol/L，餐后 ${formData.bloodSugarDinner} mmol/L
+- 症状：${formData.symptoms.join(', ') || '无'}
+- 并发症：
+  * 高血压：${formData.hypertensionComplications.join(', ') || '无'}
+  * 糖尿病：${formData.diabetesComplications.join(', ') || '无'}
+- 过敏史：${formData.allergy === '是' ? formData.allergyDetails : '无'}
+
+请用中文按以下结构组织报告内容，使用Markdown格式，请严格使用以下格式：
+## 风险评估
+1. 高血压风险评估...
+    1.第一条内容...
+    2.第二条内容...
+2. 糖尿病风险评估...
+    1.第一条内容...
+    2.第二条内容...
+
+## 医疗建议
+### 1. 西药治疗方案
+1. 第一条建议...
+2. 第二条建议...
+
+### 2. 中药/民族医药建议
+1. 第一条建议...
+2. 第二条建议...
+
+## 生活建议
+### 1. 饮食建议
+- 第一条建议...
+- 第二条建议...
+### 2. 运动建议
+- 第一条建议...
+- 第二条建议..
+
+
+## 注意事项
+[特殊警示信息]
+
+${formData.ethnicity === '苗族' ? '请额外提供适合苗族患者的传统医药建议' : ''}`;
+
+                // 调用API
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${DEEPSEEK_API_KEY}`
+                    },
+                    body: JSON.stringify({
+                        model: "deepseek-chat",
+                        messages: [{ role: "user", content: prompt }],
+                        temperature: 0.3
+                    })
+                });
+
+                const data = await response.json();
+                const reportContent = data.choices[0].message.content;
+
+                // 生成报告页面
+                showReport(formData, reportContent);
+
+            } catch (error) {
+                alert(`报告生成失败: ${error.message}`);
+            } finally {
+                document.getElementById('loading').style.display = 'none';
+            }
+        }
+      function formatReportNumbering(reportText) {
+    // 按二级标题分割内容
+    const sections = reportText.split(/(?=^#{1,6}\s.+$)/gm);
+    let output = '';
+    let currentMainSection = '';
+    let subSectionCounter = 0;
+
+    sections.forEach(section => {
+        // 处理主标题（##）
+        if (section.match(/^##\s/)) {
+            currentMainSection = section.trim();
+            subSectionCounter = 0;
+            output += `${currentMainSection}\n\n`;
+            return;
+        }
+
+        // 处理子标题（###）
+        if (section.match(/^###\s/)) {
+            subSectionCounter++;
+            output += `### ${subSectionCounter}. ${section.replace(/^###\s/, '').trim()}\n\n`;
+            return;
+        }
+
+        // 处理列表内容
+        const lines = section.split('\n');
+        let itemCounter = 1;
+
+        lines.forEach(line => {
+            // 转换无序列表为有序
+            if (line.match(/^\s*[\*\-]\s/)) {
+                output += `   ${itemCounter}. ${line.replace(/^\s*[\*\-]\s*/, '').trim()}\n`;
+                itemCounter++;
+            }
+            // 修正错误的有序列表
+            else if (line.match(/^\s*\d+\.\s/)) {
+                output += `   ${itemCounter}. ${line.replace(/^\s*\d+\.\s*/, '').trim()}\n`;
+                itemCounter++;
+            } else {
+                output += `${line}\n`;
+            }
+        });
+    });
+
+    return output;
+}
+
+        function renumberItems(sectionText) {
+            // 分割为行
+            const lines = sectionText.split('\n');
+            let output = '';
+            let counter = 1;
+
+            for (const line of lines) {
+                // 匹配数字开头的项目行
+                if (line.match(/^\s*\d+\.\s/)) {
+                    output += `  ${counter}. ${line.substring(line.indexOf('.') + 2).trim()}\n`;
+                    counter++;
+                } else if (line.trim()) {
+                    // 保留非项目行
+                    output += `${line}\n`;
+                }
+            }
+
+            return output;
+        }
+        function showReport(formData, reportText) {
+            const normalizedText = formatReportNumbering(reportText);
+    const htmlContent = markdownToHtml(normalizedText);
+
+    document.getElementById('healthForm').style.display = 'none';
+    document.getElementById('reportContainer').innerHTML = `
+        <h2>${formData.name}的健康报告</h2>
+        <div class="report-content">${htmlContent}</div>
+        <button onclick="location.reload()">返回表单</button>
+    `;
+    document.getElementById('reportContainer').style.display = 'block';
+        }
+
+        function markdownToHtml(text) {
+    // 更全面的Markdown转换
+    let html = text
+        // 标题
+        .replace(/^# (.*$)/gm, '<h1>$1</h1>')
+        .replace(/^## (.*$)/gm, '<h2>$1</h2>')
+        .replace(/^### (.*$)/gm, '<h3>$1</h3>')
+        .replace(/^#### (.*$)/gm, '<h4>$1</h4>')
+        // 列表
+        .replace(/^\* (.*$)/gm, '<li>$1</li>')
+        .replace(/^- (.*$)/gm, '<li>$1</li>')
+        .replace(/^\+ (.*$)/gm, '<li>$1</li>')
+        .replace(/^1\. (.*$)/gm, '<li>$1</li>')
+        // 引用
+        .replace(/^> (.*$)/gm, '<blockquote>$1</blockquote>')
+        // 代码块
+        .replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>')
+        // 内联代码
+        .replace(/`([^`]+)`/g, '<code>$1</code>')
+        // 加粗和斜体
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.*?)\*/g, '<em>$1</em>')
+        .replace(/_([^_]+)_/g, '<em>$1</em>')
+        // 链接
+        .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>')
+        // 图片
+        .replace(/!\[([^\]]+)\]\(([^)]+)\)/g, '<img src="$2" alt="$1">')
+        // 水平线
+        .replace(/^\-\-\-$/gm, '<hr>')
+        // 段落处理
+        .replace(/\n\n/g, '</p><p>')
+        .replace(/\n/g, '<br>');
+
+    // 将列表项包裹在ul或ol中
+    html = html.replace(/(<li>.*<\/li>)+/g, function(match) {
+        return match.includes('1.') ? '<ol>' + match + '</ol>' : '<ul>' + match + '</ul>';
+    });
+
+    return '<p>' + html + '</p>';
+
+        }
+    </script>
+</body>
+</html>
