@@ -5,180 +5,396 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>智能健康问诊系统</title>
     <style>
-        /* 基础样式 */
+        /* 基础样式 - 医疗主题 */
+        :root {
+            --primary: #1a73e8;
+            --secondary: #34a853;
+            --accent: #4285f4;
+            --warning: #ea4335;
+            --gray-light: #f8f9fa;
+            --gray-mid: #dadce0;
+            --gray-dark: #5f6368;
+        }
+
         body {
-            font-family: 'Segoe UI', sans-serif;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
             max-width: 1000px;
             margin: 0 auto;
             padding: 20px;
-            background: #f5f7fa;
+            background: #f0f4f8;
+            color: #333;
+            line-height: 1.6;
         }
-
+    
         .container {
             background: white;
             border-radius: 12px;
             padding: 30px;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
         }
-
-        /* 表单样式 */
+        
+        /* 医疗主题标题 */
+        h1 {
+            color: var(--primary);
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--gray-mid);
+            position: relative;
+        }
+        
+        h1:before {
+            content: "🏥";
+            margin-right: 10px;
+        }
+    
+        /* 表单样式优化 */
         fieldset {
-            border: 1px solid #ddd;
+            border: none;
             border-radius: 8px;
             padding: 20px;
-            margin: 15px 0;
+            margin: 25px 0;
+            background: var(--gray-light);
+            position: relative;
         }
-
+    
         legend {
             font-weight: bold;
-            padding: 0 10px;
+            padding: 0 15px;
+            background: var(--primary);
+            color: white;
+            border-radius: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: absolute;
+            top: -15px;
+            left: 20px;
         }
-
+    
         .form-row {
-            margin: 15px 0;
+            margin: 20px 0;
             display: flex;
             align-items: center;
-            gap: 10px;
+            flex-wrap: wrap;
+            gap: 15px;
         }
-
+    
         label {
             min-width: 120px;
             font-weight: 500;
+            color: var(--gray-dark);
         }
-
+    
         input, select, textarea {
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+            padding: 10px 12px;
+            border: 1px solid var(--gray-mid);
+            border-radius: 6px;
             flex: 1;
+            transition: all 0.3s ease;
+            font-size: 15px;
         }
-
+        
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.2);
+            outline: none;
+        }
+        
+        input[type="radio"], input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary);
+        }
+    
         .checkbox-group {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 10px;
-            margin: 10px 0;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 15px;
+            margin: 20px 0 10px;
+            width: 100%;
         }
-
+    
         .checkbox-item {
-        background-color: #ffffff;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        padding: 15px;
-        width: 30%;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        transition: box-shadow 0.3s ease;
-        cursor: pointer;
+            background-color: white;
+            border: 1px solid var(--gray-mid);
+            border-radius: 8px;
+            padding: 10px 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
-
+        
+        .checkbox-item:hover {
+            border-color: var(--accent);
+            box-shadow: 0 2px 8px rgba(66, 133, 244, 0.2);
+        }
+        
+        .checkbox-item input:checked + span {
+            font-weight: 500;
+            color: var(--primary);
+        }
+    
         button {
-            background: #007bff;
+            background: var(--primary);
             color: white;
-            padding: 12px 25px;
+            padding: 12px 30px;
             border: none;
-            border-radius: 5px;
+            border-radius: 30px;
             cursor: pointer;
             font-size: 16px;
-            margin-top: 20px;
+            font-weight: 500;
+            margin: 30px auto;
+            display: block;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(26, 115, 232, 0.3);
         }
-
-        /* 报告样式 */
+        
+        button:hover {
+            background: #0d62d0;
+            box-shadow: 0 4px 12px rgba(26, 115, 232, 0.4);
+            transform: translateY(-2px);
+        }
+    
+        /* 报告样式优化 */
         .report-section {
             background: #fff;
-            padding: 20px;
-            margin: 20px 0;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            border-left: 4px solid var(--primary);
         }
-
+    
         .warning {
-            color: #dc3545;
+            color: var(--warning);
             font-weight: bold;
+            padding: 10px 15px;
+            border-radius: 6px;
+            background: #ffebee;
+            margin: 15px 0;
         }
-
+    
         .miao-advice {
             background: #e8f5e9;
-            border-left: 4px solid #2ecc71;
+            border-left: 4px solid var(--secondary);
             padding: 15px;
+            margin: 15px 0;
+            border-radius: 6px;
         }
-
+    
         .loading {
             display: none;
-            color: #666;
-            font-style: italic;
+            text-align: center;
+            padding: 20px;
+            color: var(--gray-dark);
         }
-        .male-item{
-        background-color: #ffffff;
-         border: 1px solid #ddd;
-        border-radius: 8px;
-        padding: 15px;
-        width: 50%;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        transition: box-shadow 0.3s ease;
-        cursor: pointer;
-        /* 显示在一行 */
-        display: inline-block;
+        
+        .loading:after {
+            content: "...";
+            animation: dots 1.5s steps(5, end) infinite;
         }
-
-        /* Markdown样式 */
-        .report-content h2, .report-content h3, .report-content h4 {
-            margin-top: 1.5em;
-            margin-bottom: 0.5em;
-            color: #2c3e50;
+        
+        @keyframes dots {
+            0%, 20% { content: "."; }
+            40% { content: ".."; }
+            60%, 100% { content: "..."; }
         }
-        .report-content h2 {
-            border-bottom: 1px solid #eee;
-            padding-bottom: 0.3em;
+        
+        .male-item {
+            display: inline-flex;
+            align-items: center;
+            background-color: white;
+            border: 1px solid var(--gray-mid);
+            border-radius: 8px;
+            padding: 10px 20px;
+            margin-right: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            cursor: pointer;
         }
-        .report-content ul, .report-content ol {
-            padding-left: 2em;
-            margin: 1em 0;
+        
+        .male-item:hover {
+            border-color: var(--accent);
         }
-        .report-content li {
-            margin-bottom: 0.5em;
+        
+        /* 指标提示 */
+        .indicator {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 5px 0;
         }
-        .report-content p {
-            margin: 1em 0;
-            line-height: 1.6;
+        
+        .indicator-normal {
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 12px;
         }
-        .report-content strong {
+        
+        .indicator-warning {
+            background: #fff3e0;
+            color: #e65100;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+        
+        /* 血压输入框优化 */
+        .bp-inputs {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .bp-inputs input {
+            max-width: 80px;
+        }
+        
+        .bp-divider {
             font-weight: bold;
-            color: #2c3e50;
+            color: var(--gray-dark);
         }
-        .report-content em {
-            font-style: italic;
+        
+        .bp-unit {
+            color: var(--gray-dark);
+            white-space: nowrap;
         }
+        
+        /* 并发症区域优化 */
+        .complication-group h4 {
+            margin: 20px 0 10px;
+            color: var(--primary);
+            font-size: 16px;
+        }
+        
+        .complication-group h4:before {
+            content: "⚕️";
+            margin-right: 8px;
+        }
+    
+        /* Markdown样式优化 */
+        .report-content {
+            line-height: 1.8;
+        }
+        
+        .report-content h2 {
+            color: var(--primary);
+            border-bottom: 2px solid #e6f2ff;
+            padding-bottom: 8px;
+            margin-top: 30px;
+            margin-bottom: 20px;
+            font-size: 22px;
+        }
+        
+        .report-content h3 {
+            color: var(--accent);
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        
+        .report-content ul, .report-content ol {
+            padding-left: 25px;
+            margin: 15px 0;
+        }
+        
+        .report-content li {
+            margin-bottom: 8px;
+            position: relative;
+        }
+        
+        .report-content strong {
+            color: #1a73e8;
+        }
+        
+        /* 报告页面标题 */
+        #reportContainer h2 {
+            text-align: center;
+            color: var(--primary);
+            margin: 20px 0 30px;
+            font-size: 24px;
+        }
+        
+        /* 表单分组标题 */
+        .section-title {
+            font-weight: 500;
+            color: var(--gray-dark);
+            margin-bottom: 5px;
+        }
+        
+        /* 医疗图标 */
+        .medical-icon {
+            font-size: 20px;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        /* 添加列表样式 */
+        .report-content ol {
+            list-style-type: decimal;
+            padding-left: 30px;
+        }
+    
+        .report-content ul {
+            list-style-type: disc;
+            padding-left: 30px;
+        }
+    
+        .numbered-list {
+            counter-reset: item;
+        }
+    
+        .numbered-list li {
+            counter-increment: item;
+        }
+    
+        .numbered-list li::before {
+            content: counter(item) ". ";
+            margin-right: 5px;
+            color: var(--primary);
+        }
+    
     </style>
 </head>
 <body>
+
     <div class="container" id="mainContainer">
         <!-- 问诊表单 -->
         <form id="healthForm">
-            <h1>高血压糖尿病在线问诊</h1>
+            <h1>高血压糖尿病智能问诊系统</h1>
 
             <!-- 基本信息 -->
             <fieldset>
                 <legend>基本信息</legend>
                 <div class="form-row">
                     <label for="name">姓名：</label>
-                    <input type="text" id="name" required>
+                    <input type="text" id="name" placeholder="请输入您的姓名" required>
                 </div>
                 <div class="form-row">
                     <label>性别：</label>
-                    <label class="male-item">
-                    <input type="radio" id="male" name="gender" value="男" required> 男
-                    </label>
-                         <label class="male-item">
-                        <input type="radio" name="gender" id="female" value="女">女
+                    <div style="display: flex; gap: 20px;">
+                        <label class="male-item">
+                            <input type="radio" id="male" name="gender" value="男" required>
+                            <span>男</span>
                         </label>
+                        <label class="male-item">
+                            <input type="radio" name="gender" id="female" value="女">
+                            <span>女</span>
+                        </label>
+                    </div>
                 </div>
                 <div class="form-row">
                     <label for="age">年龄：</label>
-                    <input type="number" id="age" min="18" max="120" required>
+                    <input type="number" id="age" min="18" max="120" placeholder="请输入您的年龄" required>
                 </div>
                 <div class="form-row">
                     <label for="ethnicity">民族：</label>
                     <select id="ethnicity" required>
+                        <option value="" disabled selected>请选择您的民族</option>
                         <option value="汉族">汉族</option>
                         <option value="苗族">苗族</option>
                         <option value="侗族">侗族</option>
@@ -186,143 +402,184 @@
                 </div>
                 <div class="form-row">
                     <label for="contact">联系方式：</label>
-                    <input type="tel" id="contact" required>
+                    <input type="tel" id="contact" placeholder="请输入您的联系电话" required>
                 </div>
                 <div class="form-row">
                     <label for="address">居住地：</label>
-                    <input type="text" id="address" required>
+                    <input type="text" id="address" placeholder="请输入您的居住地址" required>
                 </div>
             </fieldset>
-
+    
             <!-- 血压值 -->
             <fieldset>
-                <legend>血压值</legend>
+                <legend>血压测量</legend>
                 <div class="form-row">
-                    <label>血压测量：</label>
-                    <input type="number" id="systolic" placeholder="收缩压" required>
-                    <span>/</span>
-                    <input type="number" id="diastolic" placeholder="舒张压" required>
-                    <span>mmHg</span>
+                    <label>血压值：</label>
+                    <div class="bp-inputs">
+                        <input type="number" id="systolic" placeholder="收缩压" required>
+                        <span class="bp-divider">/</span>
+                        <input type="number" id="diastolic" placeholder="舒张压" required>
+                        <span class="bp-unit">mmHg</span>
+                    </div>
+                </div>
+                <div class="indicator">
+                    <span class="indicator-normal">正常范围: ≤ 120/80 mmHg</span>
+                    <span class="indicator-warning">高血压: ≥ 140/90 mmHg</span>
                 </div>
             </fieldset>
-
+    
             <!-- 血糖值 -->
             <fieldset>
-                <legend>血糖值</legend>
+                <legend>血糖监测</legend>
                 <div class="form-row">
                     <label>空腹血糖：</label>
-                    <input type="number" id="blood-sugar-fasting" step="0.1" required>
-                    <span>mmol/L</span>
+                    <div style="display: flex; align-items: center;">
+                        <input type="number" id="blood-sugar-fasting" step="0.1" placeholder="请输入空腹血糖值" required>
+                        <span class="bp-unit">mmol/L</span>
+                    </div>
+                </div>
+                <div class="indicator">
+                    <span class="indicator-normal">正常范围: 3.9-6.1 mmol/L</span>
                 </div>
                 <div class="form-row">
                     <label>餐后血糖：</label>
-                    <input type="number" id="blood-sugar-dinner" step="0.1" required>
-                    <span>mmol/L</span>
+                    <div style="display: flex; align-items: center;">
+                        <input type="number" id="blood-sugar-dinner" step="0.1" placeholder="请输入餐后2小时血糖值" required>
+                        <span class="bp-unit">mmol/L</span>
+                    </div>
+                </div>
+                <div class="indicator">
+                    <span class="indicator-normal">正常范围: ≤ 7.8 mmol/L</span>
                 </div>
             </fieldset>
-
+    
             <!-- 症状 -->
             <fieldset>
-                <legend>身体不适状况</legend>
+                <legend>身体不适症状</legend>
+                <div class="section-title">请选择您目前存在的不适症状：</div>
                 <div class="checkbox-group">
                     <label class="checkbox-item">
-                        <input type="checkbox" name="symptoms" value="头晕"> 头晕
+                        <input type="checkbox" name="symptoms" value="头晕">
+                        <span>头晕</span>
                     </label>
                     <label class="checkbox-item">
-                        <input type="checkbox" name="symptoms" value="乏力"> 乏力
+                        <input type="checkbox" name="symptoms" value="乏力">
+                        <span>乏力</span>
                     </label>
                     <label class="checkbox-item">
-                        <input type="checkbox" name="symptoms" value="胸痛"> 胸痛
+                        <input type="checkbox" name="symptoms" value="胸痛">
+                        <span>胸痛</span>
                     </label>
                     <label class="checkbox-item">
-                        <input type="checkbox" name="symptoms" value="眼花"> 眼花
+                        <input type="checkbox" name="symptoms" value="眼花">
+                        <span>眼花</span>
                     </label>
                     <label class="checkbox-item">
-                        <input type="checkbox" name="symptoms" value="口渴"> 口渴
+                        <input type="checkbox" name="symptoms" value="口渴">
+                        <span>口渴</span>
                     </label>
                     <label class="checkbox-item">
-                        <input type="checkbox" name="symptoms" value="多尿"> 多尿
+                        <input type="checkbox" name="symptoms" value="多尿">
+                        <span>多尿</span>
                     </label>
                     <label class="checkbox-item">
-                        <input type="checkbox" name="symptoms" value="心悸"> 心悸
+                        <input type="checkbox" name="symptoms" value="心悸">
+                        <span>心悸</span>
                     </label>
                     <label class="checkbox-item">
-                        <input type="checkbox" name="symptoms" value="呼吸困难"> 呼吸困难
+                        <input type="checkbox" name="symptoms" value="呼吸困难">
+                        <span>呼吸困难</span>
                     </label>
                 </div>
             </fieldset>
-
+    
             <!-- 并发症 -->
             <fieldset>
-                <legend>并发症</legend>
-                <h4>高血压并发症</h4>
-                <div class="checkbox-group">
-                    <label class="checkbox-item">
-                        <input type="checkbox" name="hypertension-complications" value="心脏病"> 心脏病
-                    </label>
-                    <label class="checkbox-item">
-                        <input type="checkbox" name="hypertension-complications" value="中风"> 中风
-                    </label>
-                    <label class="checkbox-item">
-                        <input type="checkbox" name="hypertension-complications" value="肾病"> 肾病
-                    </label>
-                    <label class="checkbox-item">
-                        <input type="checkbox" name="hypertension-complications" value="视网膜病变"> 视网膜病变
-                    </label>
+                <legend>并发症评估</legend>
+                <div class="complication-group">
+                    <h4>高血压并发症</h4>
+                    <div class="checkbox-group">
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="hypertension-complications" value="心脏病">
+                            <span>心脏病</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="hypertension-complications" value="中风">
+                            <span>中风</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="hypertension-complications" value="肾病">
+                            <span>肾病</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="hypertension-complications" value="视网膜病变">
+                            <span>视网膜病变</span>
+                        </label>
+                    </div>
                 </div>
-
-                <h4>糖尿病并发症</h4>
-                <div class="checkbox-group">
-                    <label class="checkbox-item">
-                        <input type="checkbox" name="diabetes-complications" value="神经损伤"> 神经损伤
-                    </label>
-                    <label class="checkbox-item">
-                        <input type="checkbox" name="diabetes-complications" value="肾功能损伤"> 肾功能损伤
-                    </label>
-                    <label class="checkbox-item">
-                        <input type="checkbox" name="diabetes-complications" value="心血管问题"> 心血管问题
-                    </label>
-                    <label class="checkbox-item">
-                        <input type="checkbox" name="diabetes-complications" value="糖尿病足"> 糖尿病足
-                    </label>
+    
+                <div class="complication-group">
+                    <h4>糖尿病并发症</h4>
+                    <div class="checkbox-group">
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="diabetes-complications" value="神经损伤">
+                            <span>神经损伤</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="diabetes-complications" value="肾功能损伤">
+                            <span>肾功能损伤</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="diabetes-complications" value="心血管问题">
+                            <span>心血管问题</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="diabetes-complications" value="糖尿病足">
+                            <span>糖尿病足</span>
+                        </label>
+                    </div>
                 </div>
             </fieldset>
-
+    
             <!-- 过敏史 -->
             <fieldset>
-                <legend>用药过敏</legend>
+                <legend>药物过敏史</legend>
                 <div class="form-row">
-                    <label>过敏史：</label>
-                    <div class="checkbox-item">
-                        <input type="radio" name="allergy" value="是" required> 是
-                    </div>
-                    <div class="checkbox-item">
-                        <input type="radio" name="allergy" value="否"> 否
+                    <label>是否有过敏史：</label>
+                    <div style="display: flex; gap: 20px;">
+                        <label class="male-item">
+                            <input type="radio" name="allergy" value="是" required>
+                            <span>是</span>
+                        </label>
+                        <label class="male-item">
+                            <input type="radio" name="allergy" value="否">
+                            <span>否</span>
+                        </label>
                     </div>
                 </div>
                 <div class="form-row">
                     <label for="allergy-details">过敏详情：</label>
-                    <textarea id="allergy-details" rows="2"></textarea>
+                    <textarea id="allergy-details" rows="2" placeholder="请详细描述您的药物过敏情况"></textarea>
                 </div>
             </fieldset>
-
+    
             <button type="button" onclick="generateReport()">生成健康报告</button>
-            <div class="loading" id="loading">正在生成报告，请稍候...</div>
+            <div class="loading" id="loading">正在生成专业医疗报告</div>
         </form>
-
+    
         <!-- 报告显示区域 -->
         <div id="reportContainer" style="display: none;"></div>
     </div>
-
+    
     <script>
         const DEEPSEEK_API_KEY = 'sk-6cecc16e7c074089a36f153ec43f5b8a';
         const API_URL = 'https://api.deepseek.com/v1/chat/completions';
-
+    
         async function generateReport() {
             try {
                 // 显示加载状态
                 document.getElementById('loading').style.display = 'block';
-
+    
                 // 收集表单数据
                 const formData = {
                     name: document.getElementById('name').value,
@@ -339,13 +596,14 @@
                     allergy: document.querySelector('input[name="allergy"]:checked')?.value || '否',
                     allergyDetails: document.getElementById('allergy-details').value
                 };
-
+    
                 // 基本验证
                 if (!formData.name || !formData.age || !formData.systolic || !formData.diastolic) {
                     alert('请填写所有必填字段');
+                    document.getElementById('loading').style.display = 'none';
                     return;
                 }
-
+    
                 // 构建提示词
                 const prompt = `作为专业医生，请根据以下患者信息生成详细健康报告：
 患者信息：
@@ -406,138 +664,668 @@ ${formData.ethnicity === '苗族' ? '请额外提供适合苗族患者的传统�
                         temperature: 0.3
                     })
                 });
-
+    
                 const data = await response.json();
                 const reportContent = data.choices[0].message.content;
-
+    
                 // 生成报告页面
                 showReport(formData, reportContent);
-
+    
             } catch (error) {
                 alert(`报告生成失败: ${error.message}`);
             } finally {
                 document.getElementById('loading').style.display = 'none';
             }
         }
-      function formatReportNumbering(reportText) {
-    // 按二级标题分割内容
-    const sections = reportText.split(/(?=^#{1,6}\s.+$)/gm);
-    let output = '';
-    let currentMainSection = '';
-    let subSectionCounter = 0;
-
-    sections.forEach(section => {
-        // 处理主标题（##）
-        if (section.match(/^##\s/)) {
-            currentMainSection = section.trim();
-            subSectionCounter = 0;
-            output += `${currentMainSection}\n\n`;
-            return;
-        }
-
-        // 处理子标题（###）
-        if (section.match(/^###\s/)) {
-            subSectionCounter++;
-            output += `### ${subSectionCounter}. ${section.replace(/^###\s/, '').trim()}\n\n`;
-            return;
-        }
-
-        // 处理列表内容
-        const lines = section.split('\n');
-        let itemCounter = 1;
-
-        lines.forEach(line => {
-            // 转换无序列表为有序
-            if (line.match(/^\s*[\*\-]\s/)) {
-                output += `   ${itemCounter}. ${line.replace(/^\s*[\*\-]\s*/, '').trim()}\n`;
-                itemCounter++;
-            }
-            // 修正错误的有序列表
-            else if (line.match(/^\s*\d+\.\s/)) {
-                output += `   ${itemCounter}. ${line.replace(/^\s*\d+\.\s*/, '').trim()}\n`;
-                itemCounter++;
-            } else {
-                output += `${line}\n`;
-            }
-        });
-    });
-
-    return output;
-}
-
-        function renumberItems(sectionText) {
-            // 分割为行
-            const lines = sectionText.split('\n');
-            let output = '';
-            let counter = 1;
-
-            for (const line of lines) {
-                // 匹配数字开头的项目行
-                if (line.match(/^\s*\d+\.\s/)) {
-                    output += `  ${counter}. ${line.substring(line.indexOf('.') + 2).trim()}\n`;
-                    counter++;
-                } else if (line.trim()) {
-                    // 保留非项目行
-                    output += `${line}\n`;
-                }
-            }
-
-            return output;
-        }
-        function showReport(formData, reportText) {
-            const normalizedText = formatReportNumbering(reportText);
-    const htmlContent = markdownToHtml(normalizedText);
-
+    
+        // 更新显示报告的主函数
+function showReport(formData, reportContent) {
+    // 移除可能出现的markdown前缀和标记
+    let cleanedReportContent = reportContent.replace(/^markdown\s*/i, '').replace(/\bmarkdown\b/gi, '');
+    
+    // 将Markdown转换为HTML
+    const htmlContent = parseMarkdown(cleanedReportContent);
+    
+    // 更新DOM显示报告
     document.getElementById('healthForm').style.display = 'none';
     document.getElementById('reportContainer').innerHTML = `
         <h2>${formData.name}的健康报告</h2>
-        <div class="report-content">${htmlContent}</div>
-        <button onclick="location.reload()">返回表单</button>
+        <div class="report-section">
+            <div class="report-content">${htmlContent}</div>
+        </div>
+        <button onclick="location.reload()">返回问诊表单</button>
     `;
     document.getElementById('reportContainer').style.display = 'block';
-        }
+    
+    // 应用优化样式
+    optimizeReportContainer();
+}
 
-        function markdownToHtml(text) {
-    // 更全面的Markdown转换
-    let html = text
-        // 标题
+// Markdown解析主函数
+function parseMarkdown(markdown) {
+    // 处理标题
+    let html = markdown
         .replace(/^# (.*$)/gm, '<h1>$1</h1>')
         .replace(/^## (.*$)/gm, '<h2>$1</h2>')
         .replace(/^### (.*$)/gm, '<h3>$1</h3>')
-        .replace(/^#### (.*$)/gm, '<h4>$1</h4>')
-        // 列表
-        .replace(/^\* (.*$)/gm, '<li>$1</li>')
-        .replace(/^- (.*$)/gm, '<li>$1</li>')
-        .replace(/^\+ (.*$)/gm, '<li>$1</li>')
-        .replace(/^1\. (.*$)/gm, '<li>$1</li>')
-        // 引用
-        .replace(/^> (.*$)/gm, '<blockquote>$1</blockquote>')
-        // 代码块
-        .replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>')
-        // 内联代码
-        .replace(/`([^`]+)`/g, '<code>$1</code>')
-        // 加粗和斜体
+        .replace(/^#### (.*$)/gm, '<h4>$1</h4>');
+    
+    // 处理列表 - 使用新的简化方法
+    html = processLists(html);
+    
+    // 处理粗体和斜体
+    html = html
         .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
         .replace(/\*(.*?)\*/g, '<em>$1</em>')
-        .replace(/_([^_]+)_/g, '<em>$1</em>')
-        // 链接
+        .replace(/_([^_]+)_/g, '<em>$1</em>');
+    
+    // 处理代码
+    html = html
+        .replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>')
+        .replace(/`([^`]+)`/g, '<code>$1</code>');
+    
+    // 处理链接和图片
+    html = html
         .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>')
-        // 图片
-        .replace(/!\[([^\]]+)\]\(([^)]+)\)/g, '<img src="$2" alt="$1">')
-        // 水平线
-        .replace(/^\-\-\-$/gm, '<hr>')
-        // 段落处理
-        .replace(/\n\n/g, '</p><p>')
-        .replace(/\n/g, '<br>');
+        .replace(/!\[([^\]]+)\]\(([^)]+)\)/g, '<img src="$2" alt="$1">');
+    
+    // 处理引用和水平线
+    html = html
+        .replace(/^> (.*$)/gm, '<blockquote>$1</blockquote>')
+        .replace(/^\-\-\-$/gm, '<hr>');
+    
+    // 处理段落
+    html = processParagraphs(html);
+    
+    return html;
+}
+function addBulletListStyle() {
+    const styleElement = document.createElement('style');
+    styleElement.textContent = `
+        .bullet-list {
+            list-style-type: disc; /* 使用实心圆点 */
+            padding-left: 30px;
+            margin: 15px 0;
+        }
+        
+        .bullet-list li {
+            margin-bottom: 8px;
+            position: relative;
+        }
+        
+        /* 移除旧的编号样式 */
+        .numbered-list {
+            list-style-type: disc !important; /* 强制使用实心圆点 */
+        }
+        
+        .numbered-list li::before {
+            content: none !important; /* 移除自定义编号 */
+        }
+    `;
+    document.head.appendChild(styleElement);
+}
 
-    // 将列表项包裹在ul或ol中
-    html = html.replace(/(<li>.*<\/li>)+/g, function(match) {
-        return match.includes('1.') ? '<ol>' + match + '</ol>' : '<ul>' + match + '</ul>';
+// 处理段落
+function processParagraphs(html) {
+    // 按换行符分割
+    const lines = html.split('\n');
+    let processedHtml = '';
+    let inParagraph = false;
+    
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i].trim();
+        
+        // 跳过已经是HTML标签的行
+        if (!line || 
+            line.startsWith('<h') || 
+            line.startsWith('<ul') || 
+            line.startsWith('<ol') || 
+            line.startsWith('<li') || 
+            line.startsWith('<pre') || 
+            line.startsWith('<blockquote') ||
+            line.startsWith('<hr') ||
+            line.startsWith('</')) {
+            
+            if (inParagraph) {
+                processedHtml += '</p>\n';
+                inParagraph = false;
+            }
+            
+            processedHtml += line + '\n';
+            continue;
+        }
+        
+        // 开始新段落
+        if (!inParagraph) {
+            processedHtml += '<p>' + line;
+            inParagraph = true;
+        } else {
+            // 继续当前段落
+            processedHtml += '<br>' + line;
+        }
+        
+        // 如果下一行是空行或者是HTML标签，结束当前段落
+        if (i === lines.length - 1 || 
+            !lines[i + 1].trim() || 
+            lines[i + 1].trim().startsWith('<')) {
+            
+            if (inParagraph) {
+                processedHtml += '</p>\n';
+                inParagraph = false;
+            }
+        }
+    }
+    
+    // 确保所有段落都正确关闭
+    if (inParagraph) {
+        processedHtml += '</p>\n';
+    }
+    
+    return processedHtml;
+}
+
+// 完全重写列表处理函数，将所有有序列表转换为无序列表（项目符号）
+function processLists(text) {
+    // 1. 先移除所有类型的列表标记，包括编号和符号
+    let cleanedText = text;
+    
+    // 移除重复的编号（如"1. 1."）
+    cleanedText = cleanedText.replace(/^(\s*)(\d+)\.\s*(\d+)\.\s+(.*?)$/gm, function(match, space, num1, num2, content) {
+        return `${space}BULLET_MARKER ${content}`;
+    });
+    
+    // 移除单个编号（如"1."）
+    cleanedText = cleanedText.replace(/^(\s*)(\d+)\.\s+(.*?)$/gm, function(match, space, num, content) {
+        return `${space}BULLET_MARKER ${content}`;
+    });
+    
+    // 移除无序列表符号（如"- "、"* "、"+ "）
+    cleanedText = cleanedText.replace(/^(\s*)[-*+]\s+(.*?)$/gm, function(match, space, content) {
+        return `${space}BULLET_MARKER ${content}`;
+    });
+    
+    // 2. 识别列表区域并转换为无序列表
+    const lines = cleanedText.split('\n');
+    let result = '';
+    let inList = false;
+    let listItems = [];
+    
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        // 查找我们标记的列表项
+        const listItemMatch = line.match(/^(\s*)BULLET_MARKER\s+(.*)/);
+        
+        if (listItemMatch) {
+            // 找到列表项
+            if (!inList) {
+                // 开始一个新列表
+                inList = true;
+                listItems = [];
+            }
+            
+            // 添加列表项内容
+            listItems.push(listItemMatch[2]);
+        } else if (inList && (line.trim() === '' || !line.includes('BULLET_MARKER'))) {
+            // 列表结束
+            result += generateBulletListHtml(listItems);
+            inList = false;
+            listItems = [];
+            if (line.trim() !== '') {
+                result += line;
+            }
+            result += '\n';
+        } else {
+            // 非列表内容
+            result += line + '\n';
+        }
+    }
+    
+    // 处理文档结束时的列表
+    if (inList) {
+        result += generateBulletListHtml(listItems);
+    }
+    
+    return result;
+}
+// 生成项目符号列表HTML
+function generateBulletListHtml(items) {
+    if (items.length === 0) return '';
+    
+    let html = '<ul class="bullet-list">\n';
+    for (let item of items) {
+        html += `  <li>${item}</li>\n`;
+    }
+    html += '</ul>\n';
+    return html;
+}
+// 处理有序列表 - 修复重复编号问题
+function processOrderedLists(text) {
+    // 1. 先移除行首的数字编号，保留内容
+    let cleanedText = text.replace(/^(\s*)(\d+)\.\s*(\d+)\.\s+(.*?)$/gm, function(match, space, num1, num2, content) {
+        // 只保留内容，删除所有编号
+        return `${space}LIST_ITEM_MARKER ${content}`;
     });
 
-    return '<p>' + html + '</p>';
+    // 2. 对于只有一个编号的行也进行处理
+    cleanedText = cleanedText.replace(/^(\s*)(\d+)\.\s+(.*?)$/gm, function(match, space, num, content) {
+        return `${space}LIST_ITEM_MARKER ${content}`;
+    });
 
+    // 3. 识别列表区域
+    const lines = cleanedText.split('\n');
+    let result = '';
+    let inList = false;
+    let listItems = [];
+    
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        // 查找我们标记的列表项
+        const listItemMatch = line.match(/^(\s*)LIST_ITEM_MARKER\s+(.*)/);
+        
+        if (listItemMatch) {
+            // 找到列表项
+            if (!inList) {
+                // 开始一个新列表
+                inList = true;
+                listItems = [];
+            }
+            
+            // 添加列表项内容
+            listItems.push(listItemMatch[2]);
+        } else if (inList && line.trim() === '') {
+            // 空行结束列表
+            result += generateOrderedListHtml(listItems);
+            inList = false;
+            listItems = [];
+            result += '\n';
+        } else if (inList) {
+            // 其他内容结束列表
+            result += generateOrderedListHtml(listItems);
+            inList = false;
+            listItems = [];
+            result += line + '\n';
+        } else {
+            // 非列表内容
+            result += line + '\n';
         }
-    </script>
+    }
+    
+    // 处理文档结束时的列表
+    if (inList) {
+        result += generateOrderedListHtml(listItems);
+    }
+    
+    return result;
+}
+
+// 生成有序列表HTML
+function generateOrderedListHtml(items) {
+    if (items.length === 0) return '';
+    
+    let html = '<ol class="numbered-list">\n';
+    for (let item of items) {
+        html += `  <li>${item}</li>\n`;
+    }
+    html += '</ol>\n';
+    return html;
+}
+
+// 处理无序列表
+function processUnorderedLists(text) {
+    const lines = text.split('\n');
+    let result = '';
+    let inList = false;
+    let listItems = [];
+    
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        const listMatch = line.match(/^(\s*)[-*+]\s+(.*)/);
+        
+        if (listMatch) {
+            // 找到无序列表项
+            if (!inList) {
+                inList = true;
+                listItems = [];
+            }
+            
+            // 保存列表项
+            const indent = listMatch[1].length;
+            const content = listMatch[2];
+            listItems.push({ indent, content });
+        } else if (inList && (line.trim() === '' || !line.match(/^(\s*)[-*+]\s+(.*)/))) {
+            // 列表结束
+            result += generateUnorderedListHtml(listItems);
+            inList = false;
+            listItems = [];
+            result += line + '\n';
+        } else {
+            // 非列表内容
+            result += line + '\n';
+        }
+    }
+    
+    // 处理文档结束时的列表
+    if (inList) {
+        result += generateUnorderedListHtml(listItems);
+    }
+    
+    return result;
+}
+
+// 生成无序列表HTML
+function generateUnorderedListHtml(items) {
+    if (items.length === 0) return '';
+    
+    let html = '<ul class="bulleted-list">\n';
+    
+    for (let item of items) {
+        html += `  <li>${item.content}</li>\n`;
+    }
+    
+    html += '</ul>\n';
+    return html;
+}
+// 添加增强的报告样式
+function addEnhancedReportStyle() {
+    const styleElement = document.createElement('style');
+    styleElement.textContent = `
+        .report-content {
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+            font-size: 16px;
+            line-height: 1.8;
+            color: #333;
+        }
+        
+        .report-content h2 {
+            font-size: 24px;
+            color: #1a73e8;
+            border-bottom: 2px solid #e6f2ff;
+            padding-bottom: 12px;
+            margin-top: 35px;
+            margin-bottom: 25px;
+            position: relative;
+        }
+        
+        .report-content h2::before {
+            content: "📊";
+            margin-right: 10px;
+            font-size: 24px;
+        }
+        
+        .report-content h3 {
+            font-size: 20px;
+            color: #4285f4;
+            margin-top: 30px;
+            margin-bottom: 18px;
+            position: relative;
+        }
+        
+        .report-content h3::before {
+            content: "📋";
+            margin-right: 10px;
+            font-size: 20px;
+        } 
+        /* 风险评估项目使用红色警示图标 */
+        .report-content h2:contains("风险评估") + .bullet-list li::before {
+            content: "⚠️";
+            color: #ea4335;
+        }
+        
+        /* 医疗建议项目使用药丸图标 */
+        .report-content h2:contains("医疗建议") + .bullet-list li::before,
+        .report-content h3:contains("西药治疗") + .bullet-list li::before {
+            content: "💊";
+        }
+        
+        /* 中药建议项目使用草药图标 */
+        .report-content h3:contains("中药") + .bullet-list li::before {
+            content: "🌿";
+        }
+        
+        /* 生活建议项目使用灯泡图标 */
+        .report-content h2:contains("生活建议") + .bullet-list li::before {
+            content: "💡";
+        }
+        
+        /* 饮食建议项目使用食物图标 */
+        .report-content h3:contains("饮食建议") + .bullet-list li::before {
+            content: "🍎";
+        }
+        
+        /* 运动建议项目使用运动图标 */
+        .report-content h3:contains("运动建议") + .bullet-list li::before {
+            content: "🏃";
+        }
+        
+        /* 注意事项使用警告图标 */
+        .report-content h2:contains("注意事项") + p {
+            background-color: #fff8e1;
+            border-left: 4px solid #ffa000;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 6px;
+            font-size: 16px;
+            position: relative;
+            padding-left: 40px;
+        }
+        
+        .report-content h2:contains("注意事项") + p::before {
+            content: "⚠️";
+            position: absolute;
+            left: 10px;
+            font-size: 20px;
+        }
+        
+        .report-content strong {
+            color: #1a73e8;
+            font-weight: 600;
+        }
+        
+        /* 报告标题样式增强 */
+        #reportContainer h2 {
+            text-align: center;
+            color: #1a73e8;
+            margin: 20px 0 30px;
+            font-size: 28px;
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+            font-weight: 600;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        #reportContainer h2::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(to right, #1a73e8, #34a853);
+            border-radius: 3px;
+        }
+        
+        /* 报告容器增强 */
+        .report-section {
+            background: #fff;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            border-left: 5px solid #1a73e8;
+        }
+        
+        /* 返回按钮增强 */
+        #reportContainer button {
+            background: #1a73e8;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            margin: 30px auto;
+            display: block;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(26, 115, 232, 0.3);
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+        }
+        
+        #reportContainer button:hover {
+            background: #0d62d0;
+            box-shadow: 0 4px 12px rgba(26, 115, 232, 0.4);
+            transform: translateY(-2px);
+        }
+    `;
+    document.head.appendChild(styleElement);
+}
+function optimizeReportContainer() {
+    const styleElement = document.createElement('style');
+    styleElement.textContent = `
+        /* 扩大容器宽度 */
+        .container {
+            max-width: 1200px !important;
+            padding: 30px !important;
+            margin: 0 auto !important;
+        }
+        
+        /* 优化报告区域 */
+        .report-section {
+            background: #fff;
+            padding: 40px;
+            margin: 30px 0;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            border-left: 5px solid #1a73e8;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            width: auto;
+            max-width: 100%;
+        }
+        
+        /* 优化报告内容 */
+        .report-content {
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+            font-size: 16px;
+            line-height: 1.8;
+            color: #333;
+        }
+        
+        /* 标题样式 */
+        .report-content h2 {
+            font-size: 24px;
+            color: #1a73e8;
+            border-bottom: 2px solid #e6f2ff;
+            padding-bottom: 12px;
+            margin-top: 35px;
+            margin-bottom: 25px;
+            position: relative;
+        }
+        
+        .report-content h2::before {
+            content: "📊";
+            margin-right: 10px;
+            font-size: 24px;
+        }
+        
+        /* 副标题样式 */
+        .report-content h3 {
+            font-size: 20px;
+            color: #4285f4;
+            margin-top: 30px;
+            margin-bottom: 18px;
+            position: relative;
+        }
+        
+        .report-content h3::before {
+            content: "📋";
+            margin-right: 10px;
+            font-size: 20px;
+        }
+        
+        /* 强调文本 */
+        .report-content strong {
+            color: #1a73e8;
+            font-weight: 600;
+        }
+        
+        /* 确保所有文本都不溢出容器 */
+        .report-content p, 
+        .report-content li, 
+        .report-content h2, 
+        .report-content h3, 
+        .report-content h4 {
+            max-width: 100%;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+        }
+        
+        /* 报告标题 */
+        #reportContainer h2 {
+            text-align: center;
+            color: #1a73e8;
+            margin: 20px 0 30px;
+            font-size: 28px;
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+            font-weight: 600;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        #reportContainer h2::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(to right, #1a73e8, #34a853);
+            border-radius: 3px;
+        }
+        
+        /* 返回按钮 */
+        #reportContainer button {
+            background: #1a73e8;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            margin: 30px auto;
+            display: block;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(26, 115, 232, 0.3);
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+        }
+        
+        #reportContainer button:hover {
+            background: #0d62d0;
+            box-shadow: 0 4px 12px rgba(26, 115, 232, 0.4);
+            transform: translateY(-2px);
+        }
+        
+        /* 增加移动端适配性 */
+        @media (max-width: 768px) {
+            .report-section {
+                padding: 20px;
+            }
+            
+            .report-content h2 {
+                font-size: 22px;
+            }
+            
+            .report-content h3 {
+                font-size: 18px;
+            }
+        }
+    `;
+    document.head.appendChild(styleElement);
+}
+</script>
+
 </body>
 </html>
