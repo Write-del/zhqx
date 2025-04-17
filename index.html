@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>智能健康问诊系统</title>
+    <link rel="stylesheet" href="mobile-responsive.css">
     <style>
         /* 基础样式 - 医疗主题 */
         :root {
@@ -14,16 +15,80 @@
             --gray-light: #f8f9fa;
             --gray-mid: #dadce0;
             --gray-dark: #5f6368;
+            --font-size-base: 15px;
+            --font-size-large: 18px;
+            --font-size-xlarge: 22px;
         }
 
         body {
             font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
-            max-width: 1000px;
             margin: 0 auto;
             padding: 20px;
             background: #f0f4f8;
             color: #333;
             line-height: 1.6;
+            font-size: var(--font-size-base);
+        }
+
+        /* 新增：顶部工具栏 */
+        .top-toolbar {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            display: flex;
+            gap: 15px;
+            z-index: 100;
+        }
+
+        .toolbar-btn {
+            background: white;
+            border: 1px solid var(--gray-mid);
+            border-radius: 20px;
+            padding: 8px 15px;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .toolbar-btn:hover {
+            background: var(--gray-light);
+            border-color: var(--accent);
+        }
+
+        .toolbar-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* 大字体模式 */
+        body.large-font {
+            --font-size-base: 18px;
+            --font-size-large: 22px;
+            --font-size-xlarge: 26px;
+        }
+
+        body.x-large-font {
+            --font-size-base: 22px;
+            --font-size-large: 26px;
+            --font-size-xlarge: 32px;
+        }
+
+        /* 文字大小应用到具体元素 */
+        input, select, textarea, button, .checkbox-item span, label {
+            font-size: var(--font-size-base);
+        }
+
+        legend, h4, .section-title {
+            font-size: var(--font-size-large);
+        }
+
+        h1, h2, h3 {
+            font-size: var(--font-size-xlarge);
         }
     
         .container {
@@ -31,6 +96,7 @@
             border-radius: 12px;
             padding: 30px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            position: relative;
         }
         
         /* 医疗主题标题 */
@@ -185,65 +251,6 @@
             border-radius: 6px;
         }
     
-        .loading {
-            display: none;
-            text-align: center;
-            padding: 20px;
-            color: var(--gray-dark);
-        }
-        
-        .loading:after {
-            content: "...";
-            animation: dots 1.5s steps(5, end) infinite;
-        }
-        
-        @keyframes dots {
-            0%, 20% { content: "."; }
-            40% { content: ".."; }
-            60%, 100% { content: "..."; }
-        }
-        
-        .male-item {
-            display: inline-flex;
-            align-items: center;
-            background-color: white;
-            border: 1px solid var(--gray-mid);
-            border-radius: 8px;
-            padding: 10px 20px;
-            margin-right: 15px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        
-        .male-item:hover {
-            border-color: var(--accent);
-        }
-        
-        /* 指标提示 */
-        .indicator {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin: 5px 0;
-        }
-        
-        .indicator-normal {
-            background: #e8f5e9;
-            color: #2e7d32;
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-        }
-        
-        .indicator-warning {
-            background: #fff3e0;
-            color: #e65100;
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-        }
-        
         /* 血压输入框优化 */
         .bp-inputs {
             display: flex;
@@ -358,9 +365,371 @@
             color: var(--primary);
         }
     
+        /* 民族医学建议特殊样式 */
+        .ethnic-medicine-advice {
+            background: linear-gradient(to right, rgba(52, 168, 83, 0.08), rgba(52, 168, 83, 0.03));
+            border: 1px solid rgba(52, 168, 83, 0.2);
+            border-left: 5px solid #34a853;
+            padding: 25px;
+            margin: 35px 0;
+            border-radius: 10px;
+            position: relative;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif !important;
+        }
+        
+        .ethnic-medicine-advice h3 {
+            color: var(--secondary);
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .ethnic-medicine-advice h3:before {
+            content: "🌿";
+            margin-right: 10px;
+        }
+        
+        /* 语言指示器 */
+        .language-indicator {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: rgba(26, 115, 232, 0.1);
+            color: var(--primary);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        /* 双语显示模式 */
+        .bilingual-content {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .miao-text {
+            color: var(--primary);
+            font-style: italic;
+        }
+        
+        .chinese-text {
+            color: var(--gray-dark);
+        }
+    
+        /* 在style标签中添加以下样式，统一报告页字体 */
+        .report-content, #reportContainer, .report-section {
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif !important;
+        }
+
+        /* 更新报告页样式，确保字体统一 */
+        .report-content h2, .report-content h3, .report-content p, 
+        .report-content ul, .report-content ol, .report-content li {
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif !important;
+        }
+
+        /* 民族医学建议特殊样式 */
+        .ethnic-medicine-advice {
+            background: linear-gradient(to right, rgba(52, 168, 83, 0.08), rgba(52, 168, 83, 0.03));
+            border: 1px solid rgba(52, 168, 83, 0.2);
+            border-left: 5px solid #34a853;
+            padding: 25px;
+            margin: 35px 0;
+            border-radius: 10px;
+            position: relative;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            font-family: "Microsoft YaHei", "微软雅黑", sans-serif !important;
+        }
+    
+        /* 添加优化报告样式函数 */
+        function applyOptimizedReportStyles() {
+            const styleElement = document.createElement('style');
+            styleElement.textContent = `
+                /* 容器样式 */
+                .container {
+                    padding: 30px !important;
+                    margin: 0 auto !important;
+                }
+
+                /* 全局字体设置 */
+                #reportContainer, .report-section, .report-content, 
+                .report-content h2, .report-content h3, .report-content p, 
+                .report-content ul, .report-content ol, .report-content li {
+                    font-family: "Microsoft YaHei", "微软雅黑", sans-serif !important;
+                }
+
+                /* 报告区域增强 */
+                .report-section {
+                    background: #fff;
+                    padding: 40px;
+                    margin: 30px 0;
+                    border-radius: 12px;
+                    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+                    border-left: 5px solid #1a73e8;
+                    overflow-wrap: break-word;
+                    width: auto;
+                    position: relative;
+                }
+
+                /* 核心内容样式 */
+                .report-content {
+                    font-size: 16px;
+                    line-height: 1.8;
+                    color: #333;
+                }
+
+                /* 针对苗族用户的特殊样式 */
+                .miao-medicine-note {
+                    margin-top: 20px;
+                    padding: 10px 15px;
+                    background-color: rgba(52, 168, 83, 0.1);
+                    border-radius: 6px;
+                    font-size: 15px;
+                    color: #2e7d32;
+                    font-style: italic;
+                }
+            `;
+            document.head.appendChild(styleElement);
+        }
+        .miao-medicine-note {
+            margin-top: 20px;
+            padding: 10px 15px;
+            background-color: rgba(52, 168, 83, 0.1);
+            border-radius: 6px;
+            font-size: 15px;
+            color: #2e7d32;
+            font-style: italic;
+        }
+
+        .ethnic-medicine-advice h2 {
+            color: #34a853 !important;
+            border-bottom-color: rgba(52, 168, 83, 0.3) !important;
+        }
+
+        .ethnic-medicine-advice h2::before {
+            content: "🌿" !important;
+            color: #34a853;
+        }
+
+        .ethnic-medicine-advice ul.bullet-list li::before {
+            content: "🌿" !important;
+        }
+        
+        /* 在style标签中添加或在applyOptimizedReportStyles函数中添加 */
+/* 民族医学建议的差异化样式 */
+.ethnic-medicine-advice {
+    position: relative;
+    padding: 25px;
+    margin: 35px 0;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+    font-family: "Microsoft YaHei", "微软雅黑", sans-serif !important;
+}
+
+.ethnic-badge {
+    position: absolute;
+    top: -12px;
+    right: 20px;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* 苗族特色样式 */
+.miao-ethnic {
+    background: linear-gradient(to right, rgba(52, 168, 83, 0.08), rgba(52, 168, 83, 0.03));
+    border: 1px solid rgba(52, 168, 83, 0.2);
+    border-left: 5px solid #34a853;
+}
+
+.miao-ethnic .ethnic-badge {
+    background-color: #34a853;
+}
+
+.miao-ethnic h2 {
+    color: #34a853 !important;
+    border-bottom-color: rgba(52, 168, 83, 0.3) !important;
+}
+
+.miao-ethnic h2::before {
+    content: "🌿" !important;
+    color: #34a853;
+}
+
+/* 水族特色样式 */
+.shui-ethnic {
+    background: linear-gradient(to right, rgba(66, 133, 244, 0.08), rgba(66, 133, 244, 0.03));
+    border: 1px solid rgba(66, 133, 244, 0.2);
+    border-left: 5px solid #4285f4;
+}
+
+.shui-ethnic .ethnic-badge {
+    background-color: #4285f4;
+}
+
+.shui-ethnic h2 {
+    color: #4285f4 !important;
+    border-bottom-color: rgba(66, 133, 244, 0.3) !important;
+}
+
+.shui-ethnic h2::before {
+    content: "💧" !important;
+    color: #4285f4;
+}
+
+/* 仡佬族特色样式 */
+.gelao-ethnic {
+    background: linear-gradient(to right, rgba(234, 67, 53, 0.08), rgba(234, 67, 53, 0.03));
+    border: 1px solid rgba(234, 67, 53, 0.2);
+    border-left: 5px solid #ea4335;
+}
+
+.gelao-ethnic .ethnic-badge {
+    background-color: #ea4335;
+}
+
+.gelao-ethnic h2 {
+    color: #ea4335 !important;
+    border-bottom-color: rgba(234, 67, 53, 0.3) !important;
+}
+
+.gelao-ethnic h2::before {
+    content: "🔥" !important; 
+    color: #ea4335;
+}
+
+/* 侗族特色样式 */
+.dong-ethnic {
+    background: linear-gradient(to right, rgba(251, 188, 5, 0.08), rgba(251, 188, 5, 0.03));
+    border: 1px solid rgba(251, 188, 5, 0.2);
+    border-left: 5px solid #fbbc05;
+}
+
+.dong-ethnic .ethnic-badge {
+    background-color: #fbbc05;
+}
+
+.dong-ethnic h2 {
+    color: #fbbc05 !important;
+    border-bottom-color: rgba(251, 188, 5, 0.3) !important;
+}
+
+.dong-ethnic h2::before {
+    content: "🌾" !important;
+    color: #fbbc05;
+}
+
+/* 民族医学注释样式 */
+.ethnic-medicine-note {
+    margin-top: 20px;
+    padding: 10px 15px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-style: italic;
+}
+
+.miao-ethnic .ethnic-medicine-note {
+    background-color: rgba(52, 168, 83, 0.1);
+    color: #2e7d32;
+}
+
+.shui-ethnic .ethnic-medicine-note {
+    background-color: rgba(66, 133, 244, 0.1);
+    color: #1a73e8;
+}
+
+.gelao-ethnic .ethnic-medicine-note {
+    background-color: rgba(234, 67, 53, 0.1);
+    color: #c62828;
+}
+
+.dong-ethnic .ethnic-medicine-note {
+    background-color: rgba(251, 188, 5, 0.1);
+    color: #f57c00;
+}
+
+/* 在style标签中添加或在applyOptimizedReportStyles函数中添加 */
+/* 加载状态优化 */
+.loading {
+    display: none;
+    text-align: center;
+    padding: 30px;
+    color: var(--gray-dark);
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+    max-width: 500px;
+    margin: 20px auto;
+}
+
+.loading-dots {
+    margin: 10px 0;
+    font-size: 30px;
+    height: 20px;
+}
+
+.loading-dots::after {
+    content: "...";
+    animation: dots 1.5s infinite;
+}
+
+@keyframes dots {
+    0%, 20% { content: "."; }
+    40%, 60% { content: ".."; }
+    80%, 100% { content: "..."; }
+}
+
+.progress-container {
+    background-color: #f1f1f1;
+    border-radius: 10px;
+    height: 10px;
+    margin: 15px 0;
+    overflow: hidden;
+}
+
+.progress-bar {
+    background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+    height: 100%;
+    width: 0%;
+    border-radius: 10px;
+    transition: width 0.3s ease;
+}
+
+.loading-stages {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    color: var(--gray-dark);
+    margin-top: 5px;
+}
+
+.stage {
+    opacity: 0.6;
+    transition: all 0.3s ease;
+}
+
+.stage.active {
+    color: var(--primary);
+    font-weight: bold;
+    opacity: 1;
+}
     </style>
 </head>
 <body>
+    <!-- 顶部工具栏 -->
+    <div class="top-toolbar">
+        <div id="font-size-toggle" class="toolbar-btn">
+            <span>Aa</span> 大字显示
+        </div>
+        <div id="language-toggle" class="toolbar-btn">
+            <span>苗</span> 苗语切换
+        </div>
+    </div>
 
     <div class="container" id="mainContainer">
         <!-- 问诊表单 -->
@@ -398,6 +767,8 @@
                         <option value="汉族">汉族</option>
                         <option value="苗族">苗族</option>
                         <option value="侗族">侗族</option>
+                        <option value="水族">水族</option>
+                        <option value="仡佬族">仡佬族</option>
                     </select>
                 </div>
                 <div class="form-row">
@@ -407,6 +778,22 @@
                 <div class="form-row">
                     <label for="address">居住地：</label>
                     <input type="text" id="address" placeholder="请输入您的居住地址" required>
+                </div>
+                
+                <!-- 修改身高、体重和BMI为一行显示 -->
+                <div class="form-row">
+                    <label for="height">身体指标：</label>
+                    <div style="display: flex; align-items: center; gap: 10px; flex: 1;">
+                        <input type="number" id="height" min="100" max="250" step="0.1" placeholder="身高(cm)" required onchange="calculateBMI()" style="max-width: 100px;">
+                        <input type="number" id="weight" min="30" max="200" step="0.1" placeholder="体重(kg)" required onchange="calculateBMI()" style="max-width: 100px;">
+                        <span style="margin: 0 5px;">BMI:</span>
+                        <input type="text" id="bmi" readonly style="background-color: #f8f9fa; max-width: 60px;">
+                        <span id="bmi-category" style="font-weight: 500; min-width: 60px;"></span>
+                    </div>
+                </div>
+                <div class="indicator">
+                    <span class="indicator-normal">BMI正常范围: 18.5-24.9</span>
+                    <span class="indicator-warning">超重: ≥ 25.0</span>
                 </div>
             </fieldset>
     
@@ -516,6 +903,10 @@
                             <span>视网膜病变</span>
                         </label>
                     </div>
+                    <div class="form-row" style="margin-top: 15px;">
+                        <label for="hypertension-other">其他并发症：</label>
+                        <textarea id="hypertension-other" rows="2" placeholder="请输入其他高血压相关并发症或症状"></textarea>
+                    </div>
                 </div>
     
                 <div class="complication-group">
@@ -537,6 +928,10 @@
                             <input type="checkbox" name="diabetes-complications" value="糖尿病足">
                             <span>糖尿病足</span>
                         </label>
+                    </div>
+                    <div class="form-row" style="margin-top: 15px;">
+                        <label for="diabetes-other">其他并发症：</label>
+                        <textarea id="diabetes-other" rows="2" placeholder="请输入其他糖尿病相关并发症或症状"></textarea>
                     </div>
                 </div>
             </fieldset>
@@ -575,10 +970,363 @@
         const DEEPSEEK_API_KEY = 'sk-6cecc16e7c074089a36f153ec43f5b8a';
         const API_URL = 'https://api.deepseek.com/v1/chat/completions';
     
+        // 添加苗语词典
+        const miaoTranslation = {
+            // 页面标题和设置
+            "高血压糖尿病智能问诊系统": "Qiub Niangb Diub Bangx Rongx Diex Zangt",
+            "大字显示": "Meil Delk Lol",
+            "苗语切换": "Hmongb Lol Fuk",
+            "双语模式": "Shuang Lol Mok",
+            // 字段标签
+            "基本信息": "Duh Meil Fenb",
+            "姓名": "Guaix",
+            "性别": "Nix Nanb",
+            "年龄": "Hniangx",
+            "民族": "Minb Zuk",
+            "联系方式": "Dien Hua",
+            "居住地": "Zuk Dib",
+            "血压测量": "Sieb Yak Diub",
+            "血糖监测": "Sieb Tangb Diub",
+            "身体不适症状": "Mangb Ghangb Zengt",
+            "并发症评估": "Zengt Vongb Pak",
+            "药物过敏史": "Yak Mix Hak",
+            // 选项
+            "男": "Nanb",
+            "女": "Nix",
+            "汉族": "Han Zuk",
+            "苗族": "Hmongb Zuk",
+            "侗族": "Dongb Zuk",
+            "水族": "Suib Zuk",
+            "仡佬族": "Gelb Laob Zuk",
+            // 症状
+            "头晕": "Daub Yuk",
+            "乏力": "Mongb Lik",
+            "胸痛": "Hangt Tongb",
+            "眼花": "Maix Vut",
+            "口渴": "Kot Hax",
+            "多尿": "Zix Senb",
+            "心悸": "Sim Baix",
+            "呼吸困难": "Haix Cuk Nant",
+            // 并发症
+            "高血压并发症": "Qiub Niangb Zengt",
+            "心脏病": "Sim Zengt",
+            "中风": "Tongb Fongb",
+            "肾病": "Yenx Zengt",
+            "视网膜病变": "Maix Vut Zent",
+            "糖尿病并发症": "Tangb Zengt",
+            "神经损伤": "Simt Zengt",
+            "肾功能损伤": "Yenx Vek",
+            "心血管问题": "Sim Sieb Zengt",
+            "糖尿病足": "Diek Zengt",
+            // 过敏史
+            "是否有过敏史": "Mix Hak Lak",
+            "是": "Mix",
+            "否": "Ax",
+            "过敏详情": "Mix Hak Duk",
+            // 按钮和提示
+            "生成健康报告": "Dak Jiank Kangt Baot",
+            "正在生成专业医疗报告": "Dak Zak Jiank Baot",
+            "返回问诊表单": "Rout Diex Dab",
+            "的健康报告": "Jiank Kangt Baot",
+            // 指标和单位
+            "血压值": "Sieb Yak",
+            "收缩压": "Sot Yak",
+            "舒张压": "Suk Yak",
+            "空腹血糖": "Kong Sieb",
+            "餐后血糖": "Niaot Sieb",
+            "正常范围": "Zangt Fant",
+            "高血压": "Qiub Sieb",
+            "请输入您的姓名": "Guaix",
+            "请输入您的年龄": "Hniangx",
+            "请选择您的民族": "Minb Zuk",
+            "请输入您的联系电话": "Dien Hua",
+            "请输入您的居住地址": "Zuk Dib",
+            "请输入空腹血糖值": "Kong Sieb",
+            "请输入餐后2小时血糖值": "Niaot Sieb",
+            "请选择您目前存在的不适症状": "Mangb Ghangb Zengt",
+            "请详细描述您的药物过敏情况": "Mix Hak Duk",
+            // 报告部分
+            "风险评估": "Fengx Xib Pakx",
+            "医疗建议": "Yix Dak Jiex",
+            "西药治疗方案": "Seix Yak Fangx",
+            "中药/民族医药建议": "Zongx Yak Jiex",
+            "民族医药建议": "Minb Zux Yak",
+            "生活建议": "Sengx Huox Jiex",
+            "饮食建议": "Yinx Sik Jiex",
+            "运动建议": "Yunx Dongx Jiex",
+            "注意事项": "Zux Yix Sirx",
+            // 新增身高体重BMI相关翻译
+            "身高": "Ghaob",
+            "体重": "Zenb",
+            "BMI指数": "BMI Zhix",
+            "请输入您的身高": "Ghaob",
+            "请输入您的体重": "Zenb",
+            "偏瘦": "Piant Sout",
+            "正常": "Zhengb Changk",
+            "超重": "Chaot Zhongb",
+            "肥胖": "Feib Pangb",
+            "重度肥胖": "Zhongb Feib",
+            // 新增翻译
+            "身体指标": "Shenb Tix Zhix",
+            "BMI正常范围": "BMI Fant Wei",
+            "其他并发症": "Qib Taf Bingb",
+            "请输入其他高血压相关并发症或症状": "Qiub Niangb Qib Taf Bingb",
+            "请输入其他糖尿病相关并发症或症状": "Tangb Diub Qib Taf Bingb"
+        };
+
+        // 苗文检测器 - 检查文本是否为苗文
+        function isMiaoText(text) {
+            // 简单检测：苗文常用字符特征
+            const miaoCharacters = /[A-Z][a-z]+b|[A-Z][a-z]+k|[A-Z][a-z]+x|[A-Z][a-z]+t/;
+            return miaoCharacters.test(text) && !/[\u4e00-\u9fa5]/.test(text); // 包含苗文特征且不包含中文
+        }
+
+        // 反向翻译：苗文->中文
+        const chineseTranslation = {};
+        for (const [chinese, miao] of Object.entries(miaoTranslation)) {
+            chineseTranslation[miao] = chinese;
+        }
+
+        // 字体大小切换
+        let currentFontSize = 0; // 0: 正常, 1: 大, 2: 特大
+        const fontSizeToggle = document.getElementById('font-size-toggle');
+        fontSizeToggle.addEventListener('click', function() {
+            currentFontSize = (currentFontSize + 1) % 3;
+            document.body.classList.remove('large-font', 'x-large-font');
+            
+            if (currentFontSize === 1) {
+                document.body.classList.add('large-font');
+                this.innerHTML = '<span>Aa</span> 大字模式';
+            } else if (currentFontSize === 2) {
+                document.body.classList.add('x-large-font');
+                this.innerHTML = '<span>Aa</span> 特大字体';
+            } else {
+                this.innerHTML = '<span>Aa</span> 大字显示';
+            }
+            
+            // 如果已经切换为苗语，需要进行相应翻译
+            if (isMiaoMode) {
+                if (currentFontSize === 1) {
+                    this.innerHTML = '<span>Aa</span> Meil Delk';
+                } else if (currentFontSize === 2) {
+                    this.innerHTML = '<span>Aa</span> Meil Dal';
+                } else {
+                    this.innerHTML = '<span>Aa</span> Meil Delk Lol';
+                }
+            }
+        });
+
+        // 苗语切换
+        let isMiaoMode = false;
+        const languageToggle = document.getElementById('language-toggle');
+        languageToggle.addEventListener('click', function() {
+            isMiaoMode = !isMiaoMode;
+            this.classList.toggle('active');
+            
+            if (isMiaoMode) {
+                // 切换到苗语
+                this.innerHTML = '<span>中</span> 切换中文';
+                translateToMiao();
+            } else {
+                // 切换回中文
+                this.innerHTML = '<span>苗</span> 苗语切换';
+                translateToChinese();
+            }
+            
+            // 处理字体大小按钮的文本
+            if (isMiaoMode) {
+                if (currentFontSize === 1) {
+                    fontSizeToggle.innerHTML = '<span>Aa</span> Meil Delk';
+                } else if (currentFontSize === 2) {
+                    fontSizeToggle.innerHTML = '<span>Aa</span> Meil Dal';
+                } else {
+                    fontSizeToggle.innerHTML = '<span>Aa</span> Meil Delk Lol';
+                }
+            } else {
+                if (currentFontSize === 1) {
+                    fontSizeToggle.innerHTML = '<span>Aa</span> 大字模式';
+                } else if (currentFontSize === 2) {
+                    fontSizeToggle.innerHTML = '<span>Aa</span> 特大字体';
+                } else {
+                    fontSizeToggle.innerHTML = '<span>Aa</span> 大字显示';
+                }
+            }
+        });
+
+        // 自动检测输入语言类型
+        document.querySelectorAll('input[type="text"], textarea').forEach(input => {
+            input.addEventListener('input', function() {
+                const value = this.value.trim();
+                if (value && isMiaoText(value)) {
+                    // 检测到苗文输入，自动切换到苗文模式
+                    if (!isMiaoMode) {
+                        isMiaoMode = true;
+                        languageToggle.classList.add('active');
+                        languageToggle.innerHTML = '<span>中</span> 切换中文';
+                        translateToMiao();
+                    }
+                }
+            });
+        });
+
+        // 将页面元素翻译为苗语
+        function translateToMiao() {
+            // 标题
+            document.querySelector('h1').textContent = miaoTranslation["高血压糖尿病智能问诊系统"] || document.querySelector('h1').textContent;
+            
+            // fieldset 标题 (legend)
+            document.querySelectorAll('legend').forEach(legend => {
+                const chinese = legend.textContent;
+                legend.textContent = miaoTranslation[chinese] || chinese;
+            });
+            
+            // 标签文本
+            document.querySelectorAll('label').forEach(label => {
+                if (label.childElementCount === 0) { // 只翻译没有子元素的标签
+                    const chinese = label.textContent.replace('：', '');
+                    if (miaoTranslation[chinese]) {
+                        label.textContent = miaoTranslation[chinese] + '：';
+                    }
+                }
+            });
+            
+            // 单选框和复选框
+            document.querySelectorAll('.male-item span, .checkbox-item span').forEach(span => {
+                const chinese = span.textContent;
+                span.textContent = miaoTranslation[chinese] || chinese;
+            });
+            
+            // placeholder 属性
+            document.querySelectorAll('input[placeholder], textarea[placeholder]').forEach(input => {
+                const chinese = input.placeholder;
+                input.placeholder = miaoTranslation[chinese] || chinese;
+            });
+            
+            // 选择框选项
+            document.querySelectorAll('option').forEach(option => {
+                const chinese = option.textContent;
+                if (chinese && chinese.trim() !== '') {
+                    option.textContent = miaoTranslation[chinese] || chinese;
+                }
+            });
+            
+            // 按钮文本
+            document.querySelectorAll('button').forEach(button => {
+                const chinese = button.textContent;
+                button.textContent = miaoTranslation[chinese] || chinese;
+            });
+            
+            // 提示信息
+            document.querySelectorAll('.indicator span').forEach(span => {
+                // 仅替换冒号前的文本，保留数值范围
+                const parts = span.textContent.split(':');
+                if (parts.length > 1) {
+                    const textPart = parts[0].trim();
+                    const valuePart = parts.slice(1).join(':').trim();
+                    span.textContent = (miaoTranslation[textPart] || textPart) + ': ' + valuePart;
+                }
+            });
+            
+            // 加载文本
+            const loading = document.getElementById('loading');
+            if (loading) {
+                loading.textContent = miaoTranslation["正在生成专业医疗报告"] || loading.textContent;
+            }
+        }
+        
+        // 将页面元素恢复为中文
+        function translateToChinese() {
+            // 刷新页面是最简单的方式
+            location.reload();
+        }
+
+        // 检测输入是否为苗文
+        function detectMiaoInput() {
+            // 检查关键输入字段
+            const nameValue = document.getElementById('name').value;
+            const allergyDetails = document.getElementById('allergy-details').value;
+            
+            // 如果任一字段包含苗文特征
+            if (isMiaoText(nameValue) || isMiaoText(allergyDetails)) {
+                return true;
+            }
+            
+            return false;
+        }
+    
+        // 添加更直观的加载提示
+        function updateLoadingUI() {
+            const loadingElement = document.getElementById('loading');
+            const dots = document.createElement('div');
+            dots.className = 'loading-dots';
+            
+            // 清空当前内容
+            loadingElement.innerHTML = '正在生成专业医疗报告';
+            
+            // 添加进度指示器
+            const progressBar = document.createElement('div');
+            progressBar.className = 'loading-progress';
+            progressBar.innerHTML = `
+                <div class="progress-container">
+                    <div class="progress-bar"></div>
+                </div>
+                <div class="loading-stages">
+                    <span class="stage active">分析数据</span>
+                    <span class="stage">生成建议</span>
+                    <span class="stage">格式化报告</span>
+                </div>
+            `;
+            
+            loadingElement.appendChild(dots);
+            loadingElement.appendChild(progressBar);
+            
+            // 显示加载状态
+            loadingElement.style.display = 'block';
+            
+            // 模拟进度
+            simulateProgress();
+        }
+
+        // 模拟API处理进度
+        function simulateProgress() {
+            const progressBar = document.querySelector('.progress-bar');
+            const stages = document.querySelectorAll('.stage');
+            let width = 0;
+            
+            // 重置进度条和阶段
+            progressBar.style.width = '0%';
+            stages.forEach((stage, index) => {
+                if (index === 0) {
+                    stage.classList.add('active');
+                } else {
+                    stage.classList.remove('active');
+                }
+            });
+            
+            const interval = setInterval(() => {
+                if (width >= 100) {
+                    clearInterval(interval);
+                } else {
+                    width += 0.5;
+                    progressBar.style.width = width + '%';
+                    
+                    // 更新阶段显示
+                    if (width > 30 && width < 75) {
+                        stages[0].classList.remove('active');
+                        stages[1].classList.add('active');
+                    } else if (width >= 75) {
+                        stages[1].classList.remove('active');
+                        stages[2].classList.add('active');
+                    }
+                }
+            }, 100);
+        }
+
+        // 修改生成报告函数，添加超时处理和缓存
         async function generateReport() {
             try {
-                // 显示加载状态
-                document.getElementById('loading').style.display = 'block';
+                // 更新加载UI
+                updateLoadingUI();
     
                 // 收集表单数据
                 const formData = {
@@ -586,21 +1334,39 @@
                     gender: document.querySelector('input[name="gender"]:checked')?.value || '',
                     age: document.getElementById('age').value,
                     ethnicity: document.getElementById('ethnicity').value,
+                    // 身高体重BMI数据
+                    height: document.getElementById('height').value,
+                    weight: document.getElementById('weight').value,
+                    bmi: document.getElementById('bmi').value,
+                    bmiCategory: document.getElementById('bmi-category').textContent,
                     systolic: document.getElementById('systolic').value,
                     diastolic: document.getElementById('diastolic').value,
                     bloodSugarFasting: document.getElementById('blood-sugar-fasting').value,
                     bloodSugarDinner: document.getElementById('blood-sugar-dinner').value,
                     symptoms: Array.from(document.querySelectorAll('[name="symptoms"]:checked')).map(c => c.value),
                     hypertensionComplications: Array.from(document.querySelectorAll('[name="hypertension-complications"]:checked')).map(c => c.value),
+                    hypertensionOther: document.getElementById('hypertension-other').value, // 新增字段
                     diabetesComplications: Array.from(document.querySelectorAll('[name="diabetes-complications"]:checked')).map(c => c.value),
+                    diabetesOther: document.getElementById('diabetes-other').value, // 新增字段
                     allergy: document.querySelector('input[name="allergy"]:checked')?.value || '否',
                     allergyDetails: document.getElementById('allergy-details').value
                 };
     
                 // 基本验证
-                if (!formData.name || !formData.age || !formData.systolic || !formData.diastolic) {
-                    alert('请填写所有必填字段');
+                if (!formData.name || !formData.age || !formData.systolic || !formData.diastolic || !formData.height || !formData.weight) {
+                    alert(isMiaoMode ? 'Niub Dab Fenb Qebt' : '请填写所有必填字段');
                     document.getElementById('loading').style.display = 'none';
+                    return;
+                }
+                
+                // 检查缓存中是否有相似报告
+                const cacheKey = generateCacheKey(formData);
+                const cachedReport = localStorage.getItem(cacheKey);
+                
+                if (cachedReport) {
+                    // 使用缓存的报告内容
+                    console.log("使用缓存的报告内容");
+                    showReport(formData, cachedReport);
                     return;
                 }
     
@@ -611,15 +1377,18 @@
 - 年龄：${formData.age}岁
 - 性别：${formData.gender}
 - 民族：${formData.ethnicity}
+- 身高：${formData.height} cm
+- 体重：${formData.weight} kg
+- BMI：${formData.bmi}（${formData.bmiCategory}）
 - 血压：${formData.systolic}/${formData.diastolic} mmHg
 - 血糖：空腹 ${formData.bloodSugarFasting} mmol/L，餐后 ${formData.bloodSugarDinner} mmol/L
 - 症状：${formData.symptoms.join(', ') || '无'}
 - 并发症：
-  * 高血压：${formData.hypertensionComplications.join(', ') || '无'}
-  * 糖尿病：${formData.diabetesComplications.join(', ') || '无'}
+  * 高血压：${formData.hypertensionComplications.join(', ') || '无'}${formData.hypertensionOther ? '，' + formData.hypertensionOther : ''}
+  * 糖尿病：${formData.diabetesComplications.join(', ') || '无'}${formData.diabetesOther ? '，' + formData.diabetesOther : ''}
 - 过敏史：${formData.allergy === '是' ? formData.allergyDetails : '无'}
 
-请用中文按以下结构组织报告内容，使用Markdown格式，请严格使用以下格式：
+请用${isMiaoMode ? '苗语' : '中文'}按以下结构组织报告内容，使用Markdown格式，请严格使用以下格式：
 ## 风险评估
 1. 高血压风险评估...
     1.第一条内容...
@@ -637,6 +1406,9 @@
 1. 第一条建议...
 2. 第二条建议...
 
+## 民族医药特色建议
+${generateEthnicMedicinePrompt(formData.ethnicity)}
+
 ## 生活建议
 ### 1. 饮食建议
 - 第一条建议...
@@ -649,8 +1421,38 @@
 ## 注意事项
 [特殊警示信息]
 
-${formData.ethnicity === '苗族' ? '请额外提供适合苗族患者的传统医药建议' : ''}`;
+${shouldProvideEthnicMedicine(formData.ethnicity) ? '请特别关注传统医药和现代医学的结合，提供全面的健康指导。' : ''}`;
 
+                // 添加根据民族生成对应医学建议提示的函数
+                function generateEthnicMedicinePrompt(ethnicity) {
+                    switch(ethnicity) {
+                        case '苗族':
+                            return '请在此部分详细阐述适合苗族患者的传统医药知识，包括草药、食疗和传统治疗方法，这部分单独成为一个章节。特别关注苗族民间对高血压和糖尿病的传统治疗方法与经验，如苗医的"糯扎"（放血疗法）、"糯灸"（艾灸）和苗族常用药材如黄精、苦参、蒲公英、金银花等在治疗高血压和糖尿病的应用。';
+                            
+                        case '水族':
+                            return '请在此部分详细阐述适合水族患者的传统医药知识，包括草药、食疗和传统治疗方法，这部分单独成为一个章节。特别介绍水族医药特色，如"水族十三方"传统药方、水族特有的"冷热平衡"治疗理念，以及水族常用药材如金樱根、水牛七、鱼腥草、马蹄根等在治疗高血压和糖尿病方面的应用。也介绍水族特色的药浴、艾灸和刮痧等外治法。';
+                            
+                        case '仡佬族':
+                            return '请在此部分详细阐述适合仡佬族患者的传统医药知识，包括草药、食疗和传统治疗方法，这部分单独成为一个章节。特别关注仡佬族传统医药中的"三七"应用、"跌打损伤药"转化治疗慢性病的方法，以及仡佬族特有的药酒、药膏等制剂在高血压和糖尿病治疗中的辅助作用。介绍仡佬族常用药材如仙茅、葛根、蛇床子、仡佬凉席草等的功效和用法。';
+                            
+                        case '侗族':
+                            return '请在此部分详细阐述适合侗族患者的传统医药知识，包括草药、食疗和传统治疗方法，这部分单独成为一个章节。特别介绍侗族医药中的"侗药九制"、"侗族药枕"、药浴疗法，以及侗族特有的"侗医药茶"、酸性食物在调节血压和血糖方面的作用。结合侗族常用药材如侗族草药、野生灵芝、侗药五倍子等在治疗高血压和糖尿病方面的应用。';
+                            
+                        default:
+                            return '此部分根据患者民族背景提供相关的传统医药建议。';
+                    }
+                }
+
+                // 判断是否应该提供民族医学建议
+                function shouldProvideEthnicMedicine(ethnicity) {
+                    return ['苗族', '水族', '仡佬族', '侗族'].includes(ethnicity) || isMiaoMode;
+                }
+    
+                // 设置请求超时
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 30000); // 30秒超时
+                
+                try {
                 // 调用API
                 const response = await fetch(API_URL, {
                     method: 'POST',
@@ -662,19 +1464,112 @@ ${formData.ethnicity === '苗族' ? '请额外提供适合苗族患者的传统�
                         model: "deepseek-chat",
                         messages: [{ role: "user", content: prompt }],
                         temperature: 0.3
-                    })
+                        }),
+                        signal: controller.signal
                 });
+                    
+                    clearTimeout(timeoutId);
     
                 const data = await response.json();
                 const reportContent = data.choices[0].message.content;
+                    
+                    // 缓存报告内容
+                    localStorage.setItem(cacheKey, reportContent);
     
                 // 生成报告页面
                 showReport(formData, reportContent);
-    
+                } catch (fetchError) {
+                    if (fetchError.name === 'AbortError') {
+                        // 处理超时
+                        handleTimeoutFallback(formData);
+                    } else {
+                        throw fetchError;
+                    }
+                }
             } catch (error) {
-                alert(`报告生成失败: ${error.message}`);
+                alert(isMiaoMode ? 'Baot Dak Bib: ' + error.message : `报告生成失败: ${error.message}`);
             } finally {
                 document.getElementById('loading').style.display = 'none';
+            }
+        }
+    
+        // 生成缓存键
+        function generateCacheKey(formData) {
+            // 创建唯一标识，使用关键字段
+            return `report_${formData.ethnicity}_${formData.gender}_${formData.age}_${formData.systolic}_${formData.diastolic}_${formData.bloodSugarFasting}_${Math.floor(Date.now() / (1000 * 60 * 60 * 24))}`;
+        }
+    
+        // 处理超时的回退方案
+        function handleTimeoutFallback(formData) {
+            alert("生成报告时间较长，正在使用快速模式...");
+            
+            // 生成一个简化的报告
+            const simplifiedReport = generateSimplifiedReport(formData);
+            showReport(formData, simplifiedReport);
+        }
+    
+        // 生成简化版报告
+        function generateSimplifiedReport(formData) {
+            return `
+## 风险评估
+1. 高血压风险评估
+   - 血压值：${formData.systolic}/${formData.diastolic} mmHg，${evaluateBloodPressure(formData.systolic, formData.diastolic)}
+   - 需关注并发症：${formData.hypertensionComplications.join('、') || '暂无'}
+
+2. 糖尿病风险评估
+   - 空腹血糖：${formData.bloodSugarFasting} mmol/L，${evaluateBloodSugar(formData.bloodSugarFasting, true)}
+   - 餐后血糖：${formData.bloodSugarDinner} mmol/L，${evaluateBloodSugar(formData.bloodSugarDinner, false)}
+   - 需关注并发症：${formData.diabetesComplications.join('、') || '暂无'}
+
+## 医疗建议
+### 1. 西药治疗方案
+1. 请遵医嘱服用降压药物
+2. 请遵医嘱控制血糖
+
+### 2. 中药/民族医药建议
+1. 建议在专业中医指导下使用中药调理
+2. 辨证施治，根据体质个性化用药
+
+## 生活建议
+### 1. 饮食建议
+- 减少盐分摄入，控制每日摄入量低于6g
+- 限制高糖食物，增加膳食纤维摄入
+- 多食用新鲜蔬果，控制总热量
+
+### 2. 运动建议
+- 坚持有氧运动，如快走、游泳等
+- 每周至少150分钟中等强度运动
+- 避免剧烈运动，控制运动强度
+
+## 注意事项
+定期监测血压和血糖，出现异常及时就医。保持良好心态，避免情绪波动。
+
+*本报告为临时生成，请以医生诊断为准*
+`;
+        }
+    
+        // 评估血压
+        function evaluateBloodPressure(systolic, diastolic) {
+            if (systolic < 120 && diastolic < 80) {
+                return "正常";
+            } else if ((systolic >= 120 && systolic < 140) || (diastolic >= 80 && diastolic < 90)) {
+                return "血压偏高";
+            } else if (systolic >= 140 || diastolic >= 90) {
+                return "高血压";
+            }
+            return "需评估";
+        }
+    
+        // 评估血糖
+        function evaluateBloodSugar(value, isFasting) {
+            if (isFasting) {
+                if (value < 6.1) return "正常";
+                else if (value >= 6.1 && value < 7.0) return "空腹血糖受损";
+                else return "偏高";
+            } else {
+                if (value < 7.8) return "正常";
+                else if (value >= 7.8 && value < 11.1) return "糖耐量受损";
+                else return "偏高";
             }
         }
     
@@ -686,19 +1581,105 @@ function showReport(formData, reportContent) {
     // 将Markdown转换为HTML
     const htmlContent = parseMarkdown(cleanedReportContent);
     
-    // 更新DOM显示报告
+            // 添加民族医药建议特殊区域
+            const enhancedHtmlContent = addEthnicMedicineHighlight(htmlContent, formData.ethnicity);
+            
+            // 保存原来的顶部工具栏
+            const originalToolbar = document.querySelector('.top-toolbar');
+            
+            // 更新DOM显示报告，但保留顶部工具栏
     document.getElementById('healthForm').style.display = 'none';
     document.getElementById('reportContainer').innerHTML = `
-        <h2>${formData.name}的健康报告</h2>
+                <h2>${formData.name}${isMiaoMode ? ' Jiank Kangt Baot' : '的健康报告'}</h2>
+                <div class="language-indicator">${isMiaoMode ? '苗语版本' : '中文版本'}</div>
         <div class="report-section">
-            <div class="report-content">${htmlContent}</div>
+                    <div class="report-content" contenteditable="true">${enhancedHtmlContent}</div>
         </div>
-        <button onclick="location.reload()">返回问诊表单</button>
+                <div class="report-controls">
+                    <button class="control-btn" onclick="printReport()">打印报告</button>
+                    <button class="control-btn" onclick="saveReport()">保存报告</button>
+                    <button onclick="location.reload()">${isMiaoMode ? 'Rout Diex Dab' : '返回问诊表单'}</button>
+                </div>
     `;
     document.getElementById('reportContainer').style.display = 'block';
     
     // 应用优化样式
-    optimizeReportContainer();
+    applyOptimizedReportStyles();
+            
+            // 确保工具栏按钮在报告页面仍然有效
+            rebindToolbarEvents();
+        }
+        
+        // 新增函数：重新绑定工具栏事件
+        function rebindToolbarEvents() {
+            // 重新获取字体大小按钮并绑定事件
+            const fontSizeToggle = document.getElementById('font-size-toggle');
+            if (fontSizeToggle) {
+                fontSizeToggle.addEventListener('click', function() {
+                    currentFontSize = (currentFontSize + 1) % 3;
+                    document.body.classList.remove('large-font', 'x-large-font');
+                    
+                    if (currentFontSize === 1) {
+                        document.body.classList.add('large-font');
+                        this.innerHTML = '<span>Aa</span> ' + (isMiaoMode ? 'Meil Delk' : '大字模式');
+                    } else if (currentFontSize === 2) {
+                        document.body.classList.add('x-large-font');
+                        this.innerHTML = '<span>Aa</span> ' + (isMiaoMode ? 'Meil Dal' : '特大字体');
+                    } else {
+                        this.innerHTML = '<span>Aa</span> ' + (isMiaoMode ? 'Meil Delk Lol' : '大字显示');
+                    }
+                });
+            }
+            
+            // 重新绑定语言切换按钮事件
+            const languageToggle = document.getElementById('language-toggle');
+            if (languageToggle) {
+                languageToggle.addEventListener('click', function() {
+                    // 在报告页面不允许切换语言，因为这需要重新生成报告
+                    alert('报告已生成，无法在此页面切换语言。请返回表单页面重新生成报告。');
+                });
+            }
+        }
+
+        // 修改高亮民族医药建议部分的函数
+        function addEthnicMedicineHighlight(html, ethnicity) {
+            // 识别包含民族医药建议的标题和内容
+            const ethnicMedicineRegex = /<h2>民族医药特色建议<\/h2>|<h2>Minb Zux Yak<\/h2>/;
+            
+            // 如果是苗族用户或使用苗语模式，确保民族医药建议部分得到突出显示
+            const shouldHighlightEthnicMedicine = ethnicity === '苗族' || isMiaoMode;
+            
+            if (ethnicMedicineRegex.test(html)) {
+                // 提取民族医药部分的内容
+                let parts = html.split(ethnicMedicineRegex);
+                if (parts.length >= 2) {
+                    // 找到下一个h2标题的位置，截取中间部分
+                    const nextH2Index = parts[1].indexOf('<h2>');
+                    let ethnicMedicinePart;
+                    
+                    if (nextH2Index !== -1) {
+                        ethnicMedicinePart = parts[1].substring(0, nextH2Index);
+                        parts[1] = parts[1].substring(nextH2Index);
+                    } else {
+                        ethnicMedicinePart = parts[1];
+                        parts[1] = '';
+                    }
+                    
+                    // 应用特殊样式到民族医药部分
+                    const ethnicMedicineHtml = `
+                    <div class="ethnic-medicine-advice">
+                        <h2>${isMiaoMode ? 'Minb Zux Yak' : '民族医药特色建议'}</h2>
+                        ${ethnicMedicinePart}
+                        ${shouldHighlightEthnicMedicine ? '<div class="miao-medicine-note">以上建议根据苗族传统医药知识提供，结合现代医学理论参考。</div>' : ''}
+                    </div>
+                    `;
+                    
+                    // 重组HTML
+                    return parts[0] + ethnicMedicineHtml + parts[1];
+                }
+            }
+            
+            return html;
 }
 
 // Markdown解析主函数
@@ -739,6 +1720,7 @@ function parseMarkdown(markdown) {
     
     return html;
 }
+        
 function addBulletListStyle() {
     const styleElement = document.createElement('style');
     styleElement.textContent = `
@@ -887,6 +1869,7 @@ function processLists(text) {
     
     return result;
 }
+        
 // 生成项目符号列表HTML
 function generateBulletListHtml(items) {
     if (items.length === 0) return '';
@@ -898,6 +1881,7 @@ function generateBulletListHtml(items) {
     html += '</ul>\n';
     return html;
 }
+        
 // 处理有序列表 - 修复重复编号问题
 function processOrderedLists(text) {
     // 1. 先移除行首的数字编号，保留内容
@@ -1025,307 +2009,299 @@ function generateUnorderedListHtml(items) {
     html += '</ul>\n';
     return html;
 }
+        
 // 添加增强的报告样式
-function addEnhancedReportStyle() {
+function applyOptimizedReportStyles() {
     const styleElement = document.createElement('style');
     styleElement.textContent = `
-        .report-content {
-            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
-            font-size: 16px;
-            line-height: 1.8;
-            color: #333;
-        }
-        
-        .report-content h2 {
-            font-size: 24px;
-            color: #1a73e8;
-            border-bottom: 2px solid #e6f2ff;
-            padding-bottom: 12px;
-            margin-top: 35px;
-            margin-bottom: 25px;
-            position: relative;
-        }
-        
-        .report-content h2::before {
-            content: "📊";
-            margin-right: 10px;
-            font-size: 24px;
-        }
-        
-        .report-content h3 {
-            font-size: 20px;
-            color: #4285f4;
-            margin-top: 30px;
-            margin-bottom: 18px;
-            position: relative;
-        }
-        
-        .report-content h3::before {
-            content: "📋";
-            margin-right: 10px;
-            font-size: 20px;
-        } 
-        /* 风险评估项目使用红色警示图标 */
-        .report-content h2:contains("风险评估") + .bullet-list li::before {
-            content: "⚠️";
-            color: #ea4335;
-        }
-        
-        /* 医疗建议项目使用药丸图标 */
-        .report-content h2:contains("医疗建议") + .bullet-list li::before,
-        .report-content h3:contains("西药治疗") + .bullet-list li::before {
-            content: "💊";
-        }
-        
-        /* 中药建议项目使用草药图标 */
-        .report-content h3:contains("中药") + .bullet-list li::before {
-            content: "🌿";
-        }
-        
-        /* 生活建议项目使用灯泡图标 */
-        .report-content h2:contains("生活建议") + .bullet-list li::before {
-            content: "💡";
-        }
-        
-        /* 饮食建议项目使用食物图标 */
-        .report-content h3:contains("饮食建议") + .bullet-list li::before {
-            content: "🍎";
-        }
-        
-        /* 运动建议项目使用运动图标 */
-        .report-content h3:contains("运动建议") + .bullet-list li::before {
-            content: "🏃";
-        }
-        
-        /* 注意事项使用警告图标 */
-        .report-content h2:contains("注意事项") + p {
-            background-color: #fff8e1;
-            border-left: 4px solid #ffa000;
-            padding: 15px;
-            margin: 20px 0;
-            border-radius: 6px;
-            font-size: 16px;
-            position: relative;
-            padding-left: 40px;
-        }
-        
-        .report-content h2:contains("注意事项") + p::before {
-            content: "⚠️";
-            position: absolute;
-            left: 10px;
-            font-size: 20px;
-        }
-        
-        .report-content strong {
-            color: #1a73e8;
-            font-weight: 600;
-        }
-        
-        /* 报告标题样式增强 */
-        #reportContainer h2 {
-            text-align: center;
-            color: #1a73e8;
-            margin: 20px 0 30px;
-            font-size: 28px;
-            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
-            font-weight: 600;
-            position: relative;
-            padding-bottom: 15px;
-        }
-        
-        #reportContainer h2::after {
-            content: "";
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100px;
-            height: 3px;
-            background: linear-gradient(to right, #1a73e8, #34a853);
-            border-radius: 3px;
-        }
-        
-        /* 报告容器增强 */
-        .report-section {
-            background: #fff;
-            padding: 30px;
-            margin: 30px 0;
-            border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-            border-left: 5px solid #1a73e8;
-        }
-        
-        /* 返回按钮增强 */
-        #reportContainer button {
-            background: #1a73e8;
-            color: white;
-            padding: 12px 30px;
-            border: none;
-            border-radius: 30px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 500;
-            margin: 30px auto;
-            display: block;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 10px rgba(26, 115, 232, 0.3);
-            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
-        }
-        
-        #reportContainer button:hover {
-            background: #0d62d0;
-            box-shadow: 0 4px 12px rgba(26, 115, 232, 0.4);
-            transform: translateY(-2px);
-        }
-    `;
-    document.head.appendChild(styleElement);
-}
-function optimizeReportContainer() {
-    const styleElement = document.createElement('style');
-    styleElement.textContent = `
-        /* 扩大容器宽度 */
+        /* 容器样式 */
         .container {
-            max-width: 1200px !important;
             padding: 30px !important;
             margin: 0 auto !important;
         }
-        
-        /* 优化报告区域 */
-        .report-section {
-            background: #fff;
-            padding: 40px;
-            margin: 30px 0;
-            border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-            border-left: 5px solid #1a73e8;
-            overflow-wrap: break-word;
-            word-wrap: break-word;
-            width: auto;
-            max-width: 100%;
+
+                /* 全局字体设置 */
+                #reportContainer, .report-section, .report-content, 
+                .report-content h2, .report-content h3, .report-content p, 
+                .report-content ul, .report-content ol, .report-content li {
+                    font-family: "Microsoft YaHei", "微软雅黑", sans-serif !important;
+                }
+
+                /* 报告区域响应式字体大小 */
+                body.large-font .report-content {
+                    font-size: 18px !important;
+                }
+                
+                body.large-font .report-content h2 {
+                    font-size: 30px !important;
+                }
+                
+                body.large-font .report-content h3 {
+                    font-size: 24px !important;
+                }
+                
+                body.x-large-font .report-content {
+                    font-size: 22px !important;
+                }
+                
+                body.x-large-font .report-content h2 {
+                    font-size: 36px !important;
+                }
+                
+                body.x-large-font .report-content h3 {
+                    font-size: 28px !important;
+                }
+                
+                /* 保持工具栏在报告页面可见 */
+                .top-toolbar {
+                    position: fixed;
+                    top: 15px;
+                    right: 20px;
+                    display: flex;
+                    gap: 15px;
+                    z-index: 1000;
+                    background: rgba(255, 255, 255, 0.9);
+                    padding: 5px;
+                    border-radius: 30px;
+                    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                }
+                
+                /* 其余原有样式... */
+            `;
+            document.head.appendChild(styleElement);
         }
-        
-        /* 优化报告内容 */
-        .report-content {
-            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
-            font-size: 16px;
-            line-height: 1.8;
-            color: #333;
+
+        // 修复工具栏位置问题
+        document.addEventListener('DOMContentLoaded', function() {
+            // 确保工具栏始终位于窗口顶部
+            const toolbar = document.querySelector('.top-toolbar');
+            if (toolbar) {
+                document.body.appendChild(toolbar);
+            }
+        });
+
+        // 页面加载时检查URL参数，自动激活相应模式
+        window.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            
+            // 检查是否有语言设置参数
+            if (urlParams.has('lang')) {
+                const lang = urlParams.get('lang');
+                if (lang === 'miao') {
+                    // 自动激活苗语模式
+                    isMiaoMode = true;
+                    languageToggle.classList.add('active');
+                    languageToggle.innerHTML = '<span>中</span> 切换中文';
+                    translateToMiao();
+                }
+            }
+            
+            // 检查是否有字体大小参数
+            if (urlParams.has('fontSize')) {
+                const size = urlParams.get('fontSize');
+                if (size === 'large') {
+                    currentFontSize = 1;
+                    document.body.classList.add('large-font');
+                    fontSizeToggle.innerHTML = '<span>Aa</span> ' + (isMiaoMode ? 'Meil Delk' : '大字模式');
+                } else if (size === 'xlarge') {
+                    currentFontSize = 2;
+                    document.body.classList.add('x-large-font');
+                    fontSizeToggle.innerHTML = '<span>Aa</span> ' + (isMiaoMode ? 'Meil Dal' : '特大字体');
+                }
+            }
+            
+            // 检查是否有双语模式参数
+            if (urlParams.has('bilingual') && urlParams.get('bilingual') === 'true') {
+                isBilingualMode = true;
+                inputModeToggle.classList.add('active');
+                inputModeToggle.innerHTML = '<span>单</span> ' + (isMiaoMode ? 'Dant Lol Mok' : '单语模式');
+            }
+        });
+
+        // 计算BMI和分类
+        function calculateBMI() {
+            const height = parseFloat(document.getElementById('height').value);
+            const weight = parseFloat(document.getElementById('weight').value);
+            const bmiField = document.getElementById('bmi');
+            const bmiCategory = document.getElementById('bmi-category');
+            
+            if (height && weight && height > 0 && weight > 0) {
+                // 计算BMI: 体重(kg) / 身高(m)²
+                const heightInMeter = height / 100;
+                const bmiValue = (weight / (heightInMeter * heightInMeter)).toFixed(1);
+                
+                // 显示BMI值
+                bmiField.value = bmiValue;
+                
+                // 确定BMI分类并显示
+                let category = "";
+                let color = "";
+                
+                if (bmiValue < 18.5) {
+                    category = isMiaoMode ? "Piant Sout" : "偏瘦";
+                    color = "#4285f4"; // 蓝色
+                } else if (bmiValue < 25) {
+                    category = isMiaoMode ? "Zhengb Changk" : "正常";
+                    color = "#34a853"; // 绿色
+                } else if (bmiValue < 30) {
+                    category = isMiaoMode ? "Chaot Zhongb" : "超重";
+                    color = "#fbbc05"; // 黄色
+                } else if (bmiValue < 35) {
+                    category = isMiaoMode ? "Feib Pangb" : "肥胖";
+                    color = "#ea4335"; // 红色
+                } else {
+                    category = isMiaoMode ? "Zhongb Feib" : "重度肥胖";
+                    color = "#a50e0e"; // 深红色
+                }
+                
+                bmiCategory.textContent = category;
+                bmiCategory.style.color = color;
+            } else {
+                // 清空结果
+                bmiField.value = "";
+                bmiCategory.textContent = "";
+            }
         }
-        
-        /* 标题样式 */
-        .report-content h2 {
-            font-size: 24px;
-            color: #1a73e8;
-            border-bottom: 2px solid #e6f2ff;
-            padding-bottom: 12px;
-            margin-top: 35px;
-            margin-bottom: 25px;
-            position: relative;
+
+        // 添加打印报告功能
+        function printReport() {
+            window.print();
         }
-        
-        .report-content h2::before {
-            content: "📊";
-            margin-right: 10px;
-            font-size: 24px;
+
+        // 添加保存报告功能
+        function saveReport() {
+            const reportContent = document.querySelector('.report-content').innerHTML;
+            const patientName = document.querySelector('#reportContainer h2').textContent.replace(/的健康报告|Jiank Kangt Baot/g, '');
+            const dateStr = new Date().toLocaleDateString().replace(/\//g, '-');
+            
+            // 创建一个临时链接用于下载
+            const a = document.createElement('a');
+            const blob = new Blob([`
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta charset="UTF-8">
+                <title>${patientName}的健康报告 - ${dateStr}</title>
+                <style>
+                    body {
+                        font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+                        margin: 40px;
+                        line-height: 1.6;
+                        color: #333;
+                    }
+                    h1, h2, h3 {
+                        color: #1a73e8;
+                    }
+                    .report-content {
+                        background: #fff;
+                        padding: 20px;
+                        border-radius: 8px;
+                    }
+                    ul, ol {
+                        padding-left: 25px;
+                    }
+                    .ethnic-medicine-advice {
+                        background: #f0f8f0;
+                        padding: 15px;
+                        border-left: 4px solid #34a853;
+            margin: 20px 0;
+            border-radius: 6px;
+                    }
+                </style>
+            </head>
+            <body>
+                <h1>${patientName}的健康报告</h1>
+                <p>生成日期：${dateStr}</p>
+                <div class="report-content">
+                    ${reportContent}
+                </div>
+            </body>
+            </html>
+            `], {type: 'text/html'});
+            
+            a.href = URL.createObjectURL(blob);
+            a.download = `${patientName}健康报告-${dateStr}.html`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
         }
-        
-        /* 副标题样式 */
-        .report-content h3 {
-            font-size: 20px;
-            color: #4285f4;
-            margin-top: 30px;
-            margin-bottom: 18px;
-            position: relative;
-        }
-        
-        .report-content h3::before {
-            content: "📋";
-            margin-right: 10px;
-            font-size: 20px;
-        }
-        
-        /* 强调文本 */
-        .report-content strong {
-            color: #1a73e8;
-            font-weight: 600;
-        }
-        
-        /* 确保所有文本都不溢出容器 */
-        .report-content p, 
-        .report-content li, 
-        .report-content h2, 
-        .report-content h3, 
-        .report-content h4 {
-            max-width: 100%;
-            overflow-wrap: break-word;
-            word-wrap: break-word;
-        }
-        
-        /* 报告标题 */
-        #reportContainer h2 {
-            text-align: center;
-            color: #1a73e8;
-            margin: 20px 0 30px;
-            font-size: 28px;
-            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
-            font-weight: 600;
-            position: relative;
-            padding-bottom: 15px;
-        }
-        
-        #reportContainer h2::after {
-            content: "";
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100px;
-            height: 3px;
-            background: linear-gradient(to right, #1a73e8, #34a853);
-            border-radius: 3px;
-        }
-        
-        /* 返回按钮 */
-        #reportContainer button {
-            background: #1a73e8;
-            color: white;
-            padding: 12px 30px;
-            border: none;
-            border-radius: 30px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 500;
-            margin: 30px auto;
-            display: block;
+    </script>
+
+    <!-- 添加相关CSS样式 -->
+    <style>
+        /* 为可编辑区域添加样式 */
+        .report-content[contenteditable="true"] {
+            border: 1px solid transparent;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 10px rgba(26, 115, 232, 0.3);
-            font-family: "Microsoft YaHei", "微软雅黑", sans-serif;
+            outline: none;
+            padding: 5px;
         }
         
-        #reportContainer button:hover {
-            background: #0d62d0;
-            box-shadow: 0 4px 12px rgba(26, 115, 232, 0.4);
-            transform: translateY(-2px);
+        .report-content[contenteditable="true"]:hover {
+            border-color: #dadce0;
+            background-color: #f8f9fa;
         }
         
-        /* 增加移动端适配性 */
-        @media (max-width: 768px) {
+        .report-content[contenteditable="true"]:focus {
+            border-color: #4285f4;
+            background-color: #fff;
+            box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.2);
+        }
+        
+        /* 添加报告控制按钮样式 */
+        .report-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .control-btn {
+            background: #f8f9fa;
+            color: #1a73e8;
+            border: 1px solid #dadce0;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .control-btn:hover {
+            background: #e8f0fe;
+            border-color: #4285f4;
+        }
+        
+        /* 打印样式优化 */
+        @media print {
+            body {
+                margin: 0;
+                padding: 0;
+                background: white;
+            }
+            
+            .top-toolbar, .report-controls, .language-indicator {
+                display: none !important;
+            }
+            
             .report-section {
-                padding: 20px;
+                box-shadow: none !important;
+                border: none !important;
+                padding: 0 !important;
+            }
+            
+            .report-content {
+                font-size: 12pt !important;
             }
             
             .report-content h2 {
-                font-size: 22px;
+                font-size: 16pt !important;
             }
             
             .report-content h3 {
-                font-size: 18px;
+                font-size: 14pt !important;
             }
         }
-    `;
-    document.head.appendChild(styleElement);
-}
-</script>
-
+    </style>
 </body>
 </html>
