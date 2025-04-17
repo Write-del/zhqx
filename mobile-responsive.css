@@ -75,7 +75,19 @@
         top: 0;
         right: 0;
         justify-content: center;
+        flex-direction: column;
+        align-items: flex-end;
         margin-bottom: 15px;
+        margin-top: 5px;
+        gap: 5px;
+        width: 100%;
+    }
+    
+    .toolbar-btn {
+        padding: 5px 10px;
+        font-size: 12px;
+        width: 100%;
+        max-width: 150px;
     }
     
     /* 报告页面调整 */
