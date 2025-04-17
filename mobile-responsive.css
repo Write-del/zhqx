@@ -1,0 +1,276 @@
+/* 移动端响应式样式 */
+@media (max-width: 768px) {
+    /* 基础样式调整 */
+    body {
+        padding: 10px;
+        font-size: 14px;
+    }
+    
+    .container {
+        padding: 15px !important;
+        border-radius: 8px;
+        width: 100% !important;
+        box-sizing: border-box;
+        overflow: hidden;
+    }
+    
+    h1 {
+        font-size: 20px !important;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+    }
+    
+    /* 表单样式调整 */
+    .form-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        margin: 15px 0;
+        width: 100%;
+    }
+    
+    .form-row label {
+        min-width: auto;
+        width: 100%;
+    }
+    
+    /* 修复输入框溢出问题 */
+    input, select, textarea {
+        width: 100% !important;
+        box-sizing: border-box !important;
+        max-width: 100% !important;
+        flex-basis: 100% !important;
+    }
+    
+    /* 复选框组调整 */
+    .checkbox-group {
+        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+        gap: 10px;
+        width: 100%;
+    }
+    
+    /* 血压输入框调整 */
+    .bp-inputs {
+        flex-wrap: wrap;
+        width: 100%;
+    }
+    
+    /* 布局调整 */
+    fieldset {
+        padding: 15px;
+        margin: 20px 0;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    
+    legend {
+        font-size: 15px;
+        padding: 0 10px;
+        top: -12px;
+    }
+    
+    /* 顶部工具栏调整 */
+    .top-toolbar {
+        position: relative;
+        top: 0;
+        right: 0;
+        justify-content: center;
+        margin-bottom: 15px;
+    }
+    
+    /* 报告页面调整 */
+    .report-section {
+        padding: 20px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        overflow: hidden !important;
+    }
+    
+    /* 修复报告文字溢出问题 */
+    .report-content {
+        overflow-wrap: break-word !important;
+        word-wrap: break-word !important;
+        word-break: break-word !important;
+        hyphens: auto;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        max-width: 100% !important;
+    }
+    
+    .report-content h2 {
+        font-size: 18px !important;
+        max-width: 100% !important;
+        overflow-wrap: break-word !important;
+    }
+    
+    .report-content h3 {
+        font-size: 16px !important;
+        max-width: 100% !important;
+        overflow-wrap: break-word !important;
+    }
+    
+    .report-content p, 
+    .report-content li,
+    .report-content div {
+        max-width: 100% !important;
+        overflow-wrap: break-word !important;
+        word-wrap: break-word !important;
+        box-sizing: border-box !important;
+    }
+    
+    /* 修复内联元素溢出问题 */
+    img, table, pre {
+        max-width: 100% !important;
+        height: auto !important;
+        box-sizing: border-box !important;
+    }
+    
+    /* 加载UI调整 */
+    .loading {
+        padding: 15px;
+        max-width: 100%;
+    }
+    
+    /* 报告控制按钮调整 */
+    .report-controls {
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+    }
+    
+    /* 身体指标行调整 */
+    .form-row div[style*="display: flex"] {
+        flex-wrap: wrap;
+        gap: 5px;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+    
+    /* 表单按钮调整 */
+    button {
+        width: 100%;
+        padding: 10px;
+        margin: 20px 0;
+    }
+    
+    /* 特殊区域调整 */
+    .ethnic-medicine-advice {
+        padding: 15px;
+        margin: 20px 0;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        overflow-wrap: break-word !important;
+        max-width: 100% !important;
+    }
+    
+    /* 列表样式调整 */
+    .report-content ul, .report-content ol {
+        padding-left: 20px;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+    
+    /* 确保所有容器元素不溢出 */
+    div, section, article, aside, nav, header, footer {
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        overflow-wrap: break-word !important;
+    }
+}
+
+/* 极小屏幕适配 */
+@media (max-width: 480px) {
+    body {
+        padding: 5px;
+    }
+    
+    .container {
+        padding: 10px !important;
+    }
+    
+    .checkbox-group {
+        grid-template-columns: 1fr;
+    }
+    
+    h1:before {
+        display: none; /* 移除表情符号以节省空间 */
+    }
+    
+    .top-toolbar {
+        gap: 5px;
+    }
+    
+    .toolbar-btn {
+        padding: 5px 10px;
+        font-size: 12px;
+    }
+}
+
+/* 针对大字体模式在移动端的调整 */
+@media (max-width: 768px) {
+    body.large-font {
+        --font-size-base: 16px;
+        --font-size-large: 18px;
+        --font-size-xlarge: 22px;
+    }
+    
+    body.x-large-font {
+        --font-size-base: 18px;
+        --font-size-large: 20px;
+        --font-size-xlarge: 24px;
+    }
+}
+
+/* 优化表单内容在移动设备的可读性 */
+@media (max-width: 768px) {
+    /* 调整输入框大小 */
+    input, select, textarea {
+        font-size: 16px !important; /* 避免iOS自动缩放 */
+        padding: 8px !important;
+    }
+    
+    /* 调整BMI指标行 */
+    #bmi, #bmi-category {
+        margin-top: 5px;
+    }
+    
+    /* 调整单选按钮和复选框的触摸区域 */
+    .male-item, .checkbox-item {
+        padding: 10px;
+    }
+    
+    input[type="radio"], input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+    }
+    
+    /* 让按钮更容易点击 */
+    .toolbar-btn, button {
+        min-height: 44px;
+    }
+}
+
+/* 修复特殊区域在移动端的显示问题 */
+@media (max-width: 768px) {
+    .ethnic-badge {
+        position: static;
+        display: inline-block;
+        margin-bottom: 10px;
+    }
+    
+    .miao-medicine-note {
+        font-size: 13px;
+    }
+    
+    /* 修复民族医疗建议区域 */
+    .ethnic-medicine-advice {
+        padding: 15px !important;
+        margin: 15px 0 !important;
+    }
+    
+    /* 确保所有内容不溢出 */
+    * {
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+} 
